@@ -1,0 +1,21 @@
+\Name{Old Wine Tastes Better}
+
+%[numeric analysis (filtering)] [generic domain]
+
+(aka Let them mature / give ‘em some time)
+
+\Problem
+
+how to avoid analysing bugs that are not accurate
+
+\Context
+
+it may be the case that a bug is later discovered to be invalid, or a fix is reopened, but you may not know this and consider the bug as valid or fixed, because you do not have enough history.
+
+\Solution
+
+Discard newer bugs, that do not have enough history. Plot the distribution of bug durations (from open to last activity, or from open to a specific activity that you are interested as an outcome variable). (in my case, I discovered that more than 90\% are reopened within 1 year, so it is probably safe to discard bugs that are newer than 1 year).
+
+\RelatedPatterns
+
+Be sure to Choose a Suitable Threshold.
