@@ -1,4 +1,4 @@
-\Name{Don’t be confused}
+\Name{Don't be confused}
 %[numeric analysis (inference)] [generic domain]
 
 \Problem

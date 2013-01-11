@@ -12,4 +12,4 @@ read developer documentation on the website. You may find guidelines, well defin
 
 \Example
 
-eclipsecon, the talk “eclipse way”. NetBeans docs talk about quality engineers.
+eclipsecon, the talk ``eclipse way''. NetBeans docs talk about quality engineers.

@@ -12,7 +12,7 @@ a specific status change may have different meanings on different projects. For 
 
 \Solution
 
-don’t be afraid and read the comments of a few cases in which that status change occurs. Specially comments of bugs that are exceptional in one way or another.
+don't be afraid and read the comments of a few cases in which that status change occurs. Specially comments of bugs that are exceptional in one way or another.
 
 \RelatedPatterns
 
