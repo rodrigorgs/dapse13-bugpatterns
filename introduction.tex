@@ -1,0 +1,31 @@
+\section{Introduction}
+
+Someone said that data analysis is easy, the hard part is cleaning the data. This is true also of bug databases. You deal with data that may be incomplete, inconsistent, or just plain wrong [cite Bird, Aranda etc.]. Without proper guidance, it is easy to get lost. We hope to provide some hints for those adventurous enough to analyse bug data, by suggesting some filtering, and also general analyses that support more specific analyses.
+
+Conventions: lines beginning with > denote R code.
+
+\section{Data}
+
+The R snippets refer to data extracted from Bugzilla databases. Other databases may have different schemas, so the scripts may need to be adapted.
+
+Tables: bugs\_activity (we'll call it changes), bugs, longdescs (we'll call it comments)
+Let's assume that we have imported such tables as a R data frame.
+
+> head(events)
+
+...
+
+\section{Patterns}
+
+The format we use is:
+
+\begin{itemize}
+  \item  
+\end{itemize}
+
+% Pattern name: a handle for the pattern
+% Problem: when to apply the pattern
+% Solution: how to apply the pattern
+% Consequence: results and trade-offs of applying the pattern, common mistakes in applying the pattern to be avoided, etc.
+% Examples: brief summary and/or cite example applications of the pattern in literature; if possible, R snippets or Weka code to apply the pattern, etc.
+
