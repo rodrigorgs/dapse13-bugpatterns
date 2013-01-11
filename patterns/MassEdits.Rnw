@@ -1,23 +1,64 @@
-\Name{Beware of Mass Updates}
-
-%[numeric analysis (inference)] [problem domain] 
+\Name{Look Out For Mass Edits}
+% Look Out / Watch Out
+% Mass Edits / Bulk Edits
 
 \Problem
 
-How to discover mass edits?
-
-<<>>=
-1 + 2
-@
+  Discover changes to bug reports that were the result of a mass edit.
 
 \Context
 
-Sometimes lots of bug reports are updated almost at the same time. These mass edits should not be regarded as actual effort, but as a cleanup due to process changes, or phase change.
+  Sometimes lots of bug reports are updated almost at the same time. 
+  These mass edits are often a result of a cleanup due to process changes, or phase change. 
+  They should not be regarded as actual effort, because they may influence statistic analysis. 
+  For example, when many bugs are marked as VERIFIED in a short amount of time, it usually does not mean that someone actually verified that the resolution for the bug was adequate, it just means that the bug database was cleaned up.
 
 \Solution
 
-plot the accumulated number of 
+  At least two solutions can be applied to this problem. The first one is more exploratory and visual, and the second one is quantitative.
+
+  (1) Compute the accumulated number of changes over time and then plot this data as a simple line chart, with time in the horizontal axis. The line is always increasing, but periods with many changes will stand out as steep ascents. Examine your vertical axis to assess whether such ascents represent a large number of changes (e.g., thousands). If this is the case, then it is likely that the changes were caused by a mass edit.
+
+<<>>=
+# Sort changes by time
+#sorted.changes <- changes[order(changes$time), ]
+#cum.changes <- 1:nrow(sorted.changes)
+#plot(cum.changes ~ sorted.changes$time)
+@
+
+  (2) Choose a type of change you are interested
+
+  Construct a contingency table to count how many changes 
+
+
+  (3) Perform a hash of the comments (this is a optimization to avoid working with the full comments). Compute a contingency table to count, for each hash, the number of occurences per day, per developer. You can sort the hashes by
+  % I only thought about this one when writing this paper
+
+  (please note that there is a chance of hash collision, but it is unlikely, so such event, if it occurs, is probably sporadic and will not affect the analyses) 
+
+<<>>=
+#library(digest)
+#comments$hash <- sapply(comments$text, digest) # or select md5() --SQL
+#comments$date <- as.Date(comments$time)
+#
+#tab <- count(comments, c("hash", "date"))
+#tab <- tab[order(tab$freq, decreasing=TRUE), ]
+#head(tab)
+@
+
+  % sql: SELECT order_id,product_name,qty FROM orders INTO OUTFILE '/tmp/orders.txt'
+
+\Discussion
+
+  %results and trade-offs of applying the pattern, common mistakes in applying the pattern to be avoided, etc.
+
+\Example
+
+  \cite{Souza2012}
+
+
 
 \RelatedPatterns
 
-Be sure to Choose a Suitable Threshold.
+  Be sure to Choose a SuitableThreshold. It is also a good idea to ReadTheFineMessages
+

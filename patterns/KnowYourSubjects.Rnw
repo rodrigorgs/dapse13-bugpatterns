@@ -7,7 +7,7 @@ How to discover developers' roles?
 
 \Context
 
-Some developers are triagers, other are ``fixers'', there are also QA experts. When studying human factors, it is important to know that developers are not all equal.
+Some developers are triagers, other are ``fixers'', there are also QA experts. When studying human factors, it is important to know that developers are not all equal and have different roles.
 
 \Solution
 
