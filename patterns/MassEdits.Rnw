@@ -6,6 +6,10 @@
 
 How to discover mass edits?
 
+<<>>=
+1 + 2
+@
+
 \Context
 
 Sometimes lots of bug reports are updated almost at the same time. These mass edits should not be regarded as actual effort, but as a cleanup due to process changes, or phase change.

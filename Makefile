@@ -10,5 +10,8 @@ all: sweave $(FILENAME).tex $(BIBFILENAME).bib
 sweave:
 	$(MAKE) -C patterns
 
+view:
+	open $(FILENAME).pdf
+
 clean:
 	-rm -f *.aux *.bbl *.blg *.log *.out *.idx *.ilg *.ind *.toc *.d
