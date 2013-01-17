@@ -1,4 +1,6 @@
 patterns/*.tex
+patterns/*.pdf
+patterns/*.tmp
 *.aux
 *.glo
 *.idx
