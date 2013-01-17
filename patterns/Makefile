@@ -6,7 +6,9 @@ all: $(TEX)
 
 %.tex: %.Rnw
 	R CMD Sweave $<
-	sed -i ".tmp" -e "s/includegraphics{/includegraphics{patterns\//g" $@
+	sed -e "s/includegraphics{/includegraphics{patterns\//g" $@ > tmp.tex
+	mv tmp.tex $@
+
 
 clean:
 	rm $(TEX) *.pdf
