@@ -29,6 +29,8 @@
 
   The line is always increasing, but periods with many changes will stand out as steep ascents. Examine your vertical axis to assess whether such ascents represent a large number of changes (e.g., thousands). If this is the case, then it is likely that the changes were caused by a mass edit.
 
+  Here is the R code. Assume that {\tt changes} is the list of changes to bug reports in NetBeans/Platform. 
+
 <<echo=FALSE, results=hide>>=
 changes <- readRDS("../data/netbeans-platform-changes.rds")
 @
@@ -44,7 +46,15 @@ ver$n.changes <- 1:nrow(ver)
 with(ver, plot(n.changes ~ time, type="l"))
 @
 
-  \emph{Solution 2: count the number of changes per user per day}. Then, look for high counts. As always, choose a threshold for the number of changes, so that higher numbers are evidence of mass edits. Assume that all changes made by the developer that day are the result of a mass edit.
+  In the chart, some line segments are almost vertical (e.g., the line between 2002 and 2004). Such segments mark dates when there were mass edits.
+
+  \emph{Solution 2: count the number of changes per user per day}. Then, sort by number of changes, from highest to lowest, and select pairs (user, date) with a high number of changes. The changes that match the selected pairs (user, date) are likely to be mass edits.
+
+  Here is the R code for the solution. Assume that {\tt ver} holds the data that was computed in the previous solution. The counts are computed using the {\tt count} function from the package {\tt plyr} and assgined to the variable {\tt cnt}. Here, the highest six counts are shown.
+
+  %This solution is similar to the previous one, but more determinate and less visual. 
+
+  %Then, look for high counts. As always, choose a threshold for the number of changes, so that higher numbers are evidence of mass edits. Assume that all changes made by the developer that day are the result of a mass edit.
 
 <<results=hide>>=
 library(plyr)
@@ -60,13 +70,9 @@ x$date <- as.character(x$date)
 print(xtable(x), include.rownames=FALSE)
 @
 
-  Construct a contingency table to count how many changes 
+  \emph{Solution 3: count the number of changes per user per day with the same comment}. Same as before, except that the comment is taken into account. For optimization purposes, the comment text can be replaced by its MD5 hash (or another hash function).
 
-
-  (3) Perform a hash of the comments (this is a optimization to avoid working with the full comments). Compute a contingency table to count, for each hash, the number of occurences per day, per developer. You can sort the hashes by
-  % I only thought about this one when writing this paper
-
-  (please note that there is a chance of hash collision, but it is unlikely, so such event, if it occurs, is probably sporadic and will not affect the analyses) 
+  Here is the R code. Assume that we have a {\tt comments} data frame. First, merge it with {\tt ver} to select only comments related to verifications. Then, do the counting as usual. Here, the 6 records with higher counts are shown.
 
 <<echo=FALSE, results=hide>>=
 comments <- readRDS("../data/netbeans-platform-comments.rds")
@@ -99,23 +105,14 @@ print(xtable(x), include.rownames=FALSE)
 
 \Discussion
 
-  % TRADE-OFFS and COMMON MISTAKES
+  The first solution to find mass edits is more visual, but less accurate, as it does not take into account the user who made the changes, and also more subjective. The second solution is numeric and takes into account the users, but does not distinguish regular changes and mass edits if they were made by the same user in the same day. The third solution addresses this problem, but is more computationally intensive, as it involves user's comments.
 
-Solution 1 should be used as a first approach. The chart does not distinguish between changes made by different developers, but it should give a general idea of mass edits.
-
-Solution 2 can identify as mass edits changes that are not. This occurs because it consider that if a user performs a mass edit on a particular day, then all changes by the same user on that day are part of a mass edit. Of course, the number of mass edits should be much larger than other changes, so it is expected that only a few changes are to be misclassified.
-
-Solution 3 expands on solution 2 by taking into account the comment written to explain the change. It can be that a mass edit is performed in two parts, with slightly different comments, so if one of the parts affects only a few bug reports, such changes would be missed as mass edits.
-
-  %results and trade-offs of applying the pattern, common mistakes in applying the pattern to be avoided, etc.
 
 \Example
 
-  For example, at MSR 2012, Souza et al. \cite{Souza2012} used the first two methods. See Figure XXX in their paper for a sample visualization of ...
-
-
+  For example, at MSR 2012, Souza et al. \cite{Souza2012} used the first two solutions. They used the first solution to build the chart shown in their paper's Figure 2. Then, they used the second solution to find change bursts with more than 50 changes by the same user on the same day. Such changes were considered mass edits and consequently discarded.
 
 \RelatedPatterns
 
-  Be sure to Choose a SuitableThreshold. It is also a good idea to ReadTheFineMessages for the bug reports that were mass edited.
+  How many changes in a day are considered normal and how many indicate mass edits? Be sure to [Choose a Suitable Threshold]. After finding mass edit candidates, it is a good idea to [Read the Fine Comments] to gain more confidence that the changes resulted from a mass edit.
 
