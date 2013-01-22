@@ -1,13 +1,38 @@
-\Name{Don't be confused}
+\Name{Don't Be Confused}
 %[numeric analysis (inference)] [generic domain]
 
 \Problem
 
-confusion variables affect outcomes.
+  Assess the association between two categorical variables while considering variables tha may mask the association.
+  /
+  Discover categorical variables that mask the associaton between two other categorical variables.
 
 \Context
 
+  Measuring the associaton between two categorical variables gives some evidence of a causal relationship between them. For example, it is believed that
+  
+  Categorical variables.
+
+
 \Solution
 
-use mosaic plots. use correlation matrices.
-Consequences: mosaic plots are easy to read with two variables, barely readable with 3 or 4, but start to become confusing with 5 or more.
+  For categorical variables, use mosaic plots, stratified by possible confounding variables. 
+
+  Tests of independence: fisher test and chi-squared test.
+
+  % http://alumni.media.mit.edu/~tpminka/courses/36-350.2001/lectures/day12/
+  % http://cran.r-project.org/web/packages/vcdExtra/vignettes/vcd-tutorial.pdf
+  % http://www.jstatsoft.org/v17/i03/paper
+  % http://moderngraphics11.pbworks.com/w/file/fetch/38757969/MeyerEtAl.mosiacExtended.pdf
+
+  For continuous variables, use correlation matrices.
+
+\Discussion
+
+  Mosaic plots are easy to read with two variables, barely readable with 3 or 4, but start to become confusing with 5 or more.
+
+\Example
+
+  Use mosaic plots. use correlation matrices.
+
+\RelatedPatterns

@@ -110,7 +110,7 @@ print(xtable(x), include.rownames=FALSE)
 
 \Example
 
-  For example, at MSR 2012, Souza et al. \cite{Souza2012} used the first two solutions. They used the first solution to build the chart shown in their paper's Figure 2. Then, they used the second solution to find change bursts with more than 50 changes by the same user on the same day. Such changes were considered mass edits and consequently discarded.
+  For example, Souza et al. \cite{Souza2012} used the first two solutions. They used the first solution to build the chart shown in their paper's Figure 2. Then, they used the second solution to find change bursts with more than 50 changes by the same user on the same day. Such changes were considered mass edits and consequently discarded.
 
 \RelatedPatterns
 
