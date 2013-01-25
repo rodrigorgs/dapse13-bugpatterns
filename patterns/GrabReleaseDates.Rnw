@@ -16,7 +16,7 @@
 
   \emph{Solution 1}. Some projects tag specific revisions of the source code maintained at a version control system. Identify tags that denote specific releases, by looking at the tag name. Consider the dates of these tags as release dates.
 
-  \emph{Solution 2}. The Wayback Machine\footnote{\url{http://archive.org/web/web.php}} is a free service that archives copies of web pages since 1996. Find the web page that lists the latest versions, together with release dates. Then, enter the URL in the Wayback Machine to see historical versions of the page that, hopefully, contain older release dates.
+  \emph{Solution 2}. The Internet Archive Wayback Machine\footnote{\url{http://archive.org/web/web.php}} is a free service that archives copies of web pages since 1996. Find the web page that lists the latest versions, together with release dates. Then, enter the URL in the Wayback Machine to see historical versions of the page that, hopefully, contain older release dates.
 
 \Discussion
 

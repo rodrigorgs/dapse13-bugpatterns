@@ -1,1 +1,13 @@
 \Name{Choose a Suitable Threshold}
+
+\Problem
+
+\Context
+
+\Solution
+
+\Discussion
+
+\Example
+
+\RelatedPatterns
