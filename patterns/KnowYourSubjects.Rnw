@@ -39,10 +39,10 @@ t <- merge(as.data.frame.matrix(t1),
            by="row.names")
 t$qe <- t$VERIFIED / (1 + t$FIXED) > 10
 total <- sum(t$VERIFIED)
-part <- sum(t$VERIFIED[t$verifier]) / total
+part <- sum(t$VERIFIED[t$qe]) / total
 if (part < 0.5)
   t$qe <- FALSE
-sum(t$qe)
+num.qe.developers <- sum(t$qe)
 @
 
 %    changed a bug 
