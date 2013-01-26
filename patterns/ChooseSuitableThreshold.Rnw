@@ -36,7 +36,7 @@ metric <- cnt$freq
 <<fig=TRUE,width=6,height=3>>=
 metric <- metric[metric > 2]
 plot(density(metric), log="x")
-abline(v=20)
+abline(v=20, lty=3)
 @
 
   A value around 20 appears to be a boundary between frequent and unfrequent values for the metric, as shown with a vertical line, and thus may be a good choice for a threshold to distinguish between usual and unusual numbers of verifications per developer and day.
