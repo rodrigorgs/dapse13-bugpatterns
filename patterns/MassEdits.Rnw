@@ -35,8 +35,6 @@
 changes <- readRDS("../data/netbeans-platform-changes.rds")
 @
 
-\setkeys{Gin}{width=0.4\textwidth}
-
 \todo[inline]{Center figure}
 <<fig=TRUE,width=6,height=5>>=
 ver <- subset(changes, field == "bug_status" 

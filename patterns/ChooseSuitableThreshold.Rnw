@@ -31,7 +31,6 @@ cnt <- count(ver, c("date", "user"))
 cnt <- cnt[order(cnt$freq, decreasing=T), ]
 metric <- cnt$freq
 @
-\setkeys{Gin}{width=0.4\textwidth}
 
 <<fig=TRUE,width=6,height=3>>=
 metric <- metric[metric > 2]

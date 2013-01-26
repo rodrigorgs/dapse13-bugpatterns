@@ -32,7 +32,6 @@ bugs <- readRDS("../data/netbeans-platform-bugs.rds")
   Analyze the time spans of bug reports from their creation to the outcome being studied. For example, let's consider bug reopenings as the outcome. Select only reopened bugs and use a box plot or a density plot to visualize the distribution of time spans from creation to reopening. Then choose a threshold. It should be a time span that is large enough so that most reopened bug reports are reopened within that span. R code:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\setkeys{Gin}{width=0.4\textwidth}
 <<fig=TRUE,width=6,height=4>>=
 library(data.table)
 changes <- data.table(changes)
@@ -86,7 +85,7 @@ confidence <- p.never.reopened / prob.not.reopened.within.timespan
 
   The confidence for a threshold of \Sexpr{threshold} days is \Sexpr{format(round(confidence, 2), nsmall = 2)}.
 
-  
+
 
 
 \Example
