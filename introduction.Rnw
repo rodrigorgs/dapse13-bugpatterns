@@ -1,22 +1,14 @@
 \section{Introduction}
 
+\todo[inline]{R code in the patterns should go to example section.}
+
 Bug tracking systems store bug reports for a software project and keep track of all progress and discussion for each bug. Therefore, they provide information not just about the defects on the software, but also about the development process. This is why bug reports are such an invaluable source of information for data scientists studying software.
 
 However, bug tracking systems often contain data that is inaccurate~\cite{Antoniol2008}, biased~\cite{Bird2009}, or incomplete~\cite{Aranda2009}. For example, marking a resolved bug as verified usually means that some kind of software verification (source code inspection, testing etc.) was performed and the resolution was considered appropriate. Sometimes, however, old bug reports are marked as verified to help users and developers keep track of current bug reports~\cite{Souza2012}.
 
 Without proper guidance, it is easy to overlook pitfalls in the data and draw wrong conclusions. In this paper, we provide best practices and step-by-step solutions to recurring problems from cleaning up bug data up to deriving meaningful conclusions from bug reports.
 
-Each solution is presented in a structured form called pattern. A pattern contains 7 sections: (1) a short \emph{name}; (2) the \emph{problem} being solved; (3) a \emph{context} in which the pattern can be applied; (4) one or more \emph{solutions} to the problem; (5) a \emph{discussion} of trade-offs and common mistakes to consider when using the pattern; (6) real-world or fictitious \emph{examples} of the pattern in use; (7) \emph{related patterns}. %, that either can be used together with the current pattern or solve similar problems.
-
-% \begin{itemize}
-% 	\item \emph{name}: a short name;
-% 	\item \emph{problem}: the problem solved by the pattern;
-% 	\item \emph{context}: a context in which the solution can be applied;
-% 	\item \emph{solution}: one or more solutions to the problem;
-% 	\item \emph{discussion}: trade-offs and common mistakes when applying the pattern;
-% 	\item \emph{example}: a real-world or fictitious example of the pattern in use;
-% 	\item \emph{related patterns}: patterns that can be applied together with the current one, or patterns that solve similar problems.
-% \end{itemize}
+Each solution is presented in a structured form called pattern. A pattern contains 7 sections: (1) a short \emph{name}; (2) the \emph{problem} being solved; (3) a \emph{context} in which the pattern can be applied; (4) one or more \emph{solutions} to the problem; (5) a \emph{discussion} of trade-offs and common mistakes to consider when using the pattern; (6) real-world or fictitious \emph{examples} of the pattern in use; (7) \emph{related patterns}. 
 
 \section{Data and Code}
 
@@ -53,14 +45,6 @@ The \emph{status} field is used to keep track of the progress of the bug fixing 
 
 There are many forms of resolving a bug. To reflect that, when a bug status is changed to {\tt RESOLVED}, the \emph{resolution} field is changed either to {\tt FIXED}---if the software was changed to solve the issue---, {\tt WORKSFORME}---if developers were not able to reproduce the problem---, {\tt DUPLICATE}---if a previous bug report describes the same problem---, among other resolutions.
 
-% <<echo=FALSE, results=tex>>=
-% library(xtable)
-% comments <- readRDS("data/netbeans-platform-comments.rds")
-% comments <- head(comments, 3)
-% comments$time <- as.character(comments$time)
-% print(xtable(comments), include.rownames=FALSE)
-% @
-
 is based no Bugzilla's database schema, 
 Data from other bts should be similar. 
 
@@ -73,18 +57,3 @@ The R snippets refer to data extracted from Bugzilla databases. Other databases 
 To ensure reproducibility, the full source code for this paper, together with data sets, is available at ...
 
 Conventions: lines beginning with > denote R code.
-
-% \section{Patterns}
-
-% The format we use is:
-
-% \begin{itemize}
-%   \item  
-% \end{itemize}
-
-% Pattern name: a handle for the pattern
-% Problem: when to apply the pattern
-% Solution: how to apply the pattern
-% Consequence: results and trade-offs of applying the pattern, common mistakes in applying the pattern to be avoided, etc.
-% Examples: brief summary and/or cite example applications of the pattern in literature; if possible, R snippets or Weka code to apply the pattern, etc.
-
