@@ -1,10 +1,22 @@
 \section{Introduction}
 
-Bug tracking systems store bug reports for a software project and keeps track of all progress and discussion for each bug. Therefore, they provide information not just about the defects on the software, but also about the development process. This is why bug reports are such an invaluable source of information for data scientists studying software.
+Bug tracking systems store bug reports for a software project and keep track of all progress and discussion for each bug. Therefore, they provide information not just about the defects on the software, but also about the development process. This is why bug reports are such an invaluable source of information for data scientists studying software.
 
-However, bug tracking systems often contain data that is inaccurate~\cite{Antoniol2008}, biased~\cite{Bird2009}, or incomplete~\cite{Aranda2009}. \todo{expand on this idea}
+However, bug tracking systems often contain data that is inaccurate~\cite{Antoniol2008}, biased~\cite{Bird2009}, or incomplete~\cite{Aranda2009}. For example, marking a resolved bug as verified usually means that some kind of software verification (source code inspection, testing etc.) was performed and the resolution was considered appropriate. Sometimes, however, old bug reports are marked as verified to help users and developers keep track of current bug reports~\cite{Souza2012}.
 
-Without proper guidance, it is easy to overlook pitfalls in the data and draw wrong conclusions. In this paper, we hope to provide some hints for adventurous data scientists that intend to explore bug data, in the form of patterns\todo{explain briefly what are}. We suggest sources to find complementary information, step-by-step guides to clean up bug data, and analyses that lead to meaningful conclusions.
+Without proper guidance, it is easy to overlook pitfalls in the data and draw wrong conclusions. In this paper, we provide best practices and step-by-step solutions to recurring problems from cleaning up bug data up to deriving meaningful conclusions from bug reports.
+
+Each solution is presented in a structured form called pattern. A pattern contains 7 sections: (1) a short \emph{name}; (2) the \emph{problem} being solved; (3) a \emph{context} in which the pattern can be applied; (4) one or more \emph{solutions} to the problem; (5) a \emph{discussion} of trade-offs and common mistakes to consider when using the pattern; (6) real-world or fictitious \emph{examples} of the pattern in use; (7) \emph{related patterns}. %, that either can be used together with the current pattern or solve similar problems.
+
+% \begin{itemize}
+% 	\item \emph{name}: a short name;
+% 	\item \emph{problem}: the problem solved by the pattern;
+% 	\item \emph{context}: a context in which the solution can be applied;
+% 	\item \emph{solution}: one or more solutions to the problem;
+% 	\item \emph{discussion}: trade-offs and common mistakes when applying the pattern;
+% 	\item \emph{example}: a real-world or fictitious example of the pattern in use;
+% 	\item \emph{related patterns}: patterns that can be applied together with the current one, or patterns that solve similar problems.
+% \end{itemize}
 
 \section{Data and Code}
 
@@ -12,7 +24,7 @@ Each pattern is illustrated by examples when necessary. We show how to analyze B
 
 In the examples, we use three tables (i.e., R data frames) to store bug data. Such tables are based on Bugzilla's database schema, except some tables and columns are renamed for clarity.
 
-The {\tt bugs} table contains general information about bugs, such as its creation time, the user who reported the bug and its last status.
+The {\tt bugs} table contains general information about bug reports, which are identified by unique numbers (column {\tt bug}). Each bug report has a \emph{priority}, a \emph{severity}, and information about the time of creation ({\tt creation.time}), and the time of the last modification ({\tt modif.time}).
 
 <<echo=FALSE, results=tex>>=
 library(xtable)
@@ -20,29 +32,39 @@ bugs <- readRDS("data/netbeans-platform-bugs.rds")
 bugs <- head(bugs, 3)
 bugs$creation.time <- as.character(as.Date(bugs$creation.time))
 bugs$modif.time <- as.character(as.Date(bugs$modif.time))
+bugs$reporter <- NULL
 print(xtable(bugs), include.rownames=FALSE)
 @
 
+The {\tt comments} table contains comments that \emph{users} added to a \emph{bug report} at some point in \emph{time}.
 
-The {\tt changes} table contains all changes ``suffered'' by all bugs over time.
+
+The {\tt changes} table contains all modifications made by users on bug reports over time. This includes changes in priority, status, resolution, and virtually any other field in a bug report. Each row contains the \emph{new value} of a \emph{field} that was modified by a \emph{user} at some point in \emph{time}. (In this context, user denotes a user of the bug tracking system, which can be a developer or a final user.)
 
 <<echo=FALSE, results=tex>>=
 library(xtable)
 changes <- readRDS("data/netbeans-platform-changes.rds")
-changes <- subset(changes, field %in% c("bug_status", "resolution"))[1:3,]
-changes$time <- as.character(changes$time)
+changes <- subset(changes, field %in% c("bug_status", "resolution"))[3:5,]
+changes$time <- as.character(as.Date(changes$time))
 print(xtable(changes), include.rownames=FALSE)
 @
 
-The {\tt comments} table contains comments.
+The \emph{status} field is used to keep track of the progress of the bug fixing activity. A bug reported is created with status {\tt NEW} or {\tt UNCONFIRMED}. Then, its status may be changed to {\tt ASSIGNED}, to denote that a user has taken responsibility on the bug. After that, the bug is {\tt RESOLVED}, then optionally {\tt VERIFIED} by the quality assurance team and {\tt CLOSED}, after the next software release comes out. If, after resolving the bug, someone finds that the resolution was not appropriate, the status is changed to {\tt REOPENED}.
+
+There are many forms of resolving a bug. To reflect that, when a bug status is changed to {\tt RESOLVED}, the \emph{resolution} field is changed either to {\tt FIXED}---if the software was changed to solve the issue---, {\tt WORKSFORME}---if developers were not able to reproduce the problem---, {\tt DUPLICATE}---if a previous bug report describes the same problem---, among other resolutions.
+
+% <<echo=FALSE, results=tex>>=
+% library(xtable)
+% comments <- readRDS("data/netbeans-platform-comments.rds")
+% comments <- head(comments, 3)
+% comments$time <- as.character(comments$time)
+% print(xtable(comments), include.rownames=FALSE)
+% @
 
 is based no Bugzilla's database schema, 
 Data from other bts should be similar. 
 
 The R snippets refer to data extracted from Bugzilla databases. Other databases may have different schemas, so the scripts may need to be adapted.
-
-Tables: bugs\_activity (we'll call it changes), bugs, longdescs (we'll call it comments)
-Let's assume that we have imported such tables as a R data frame.
 
 > head(events)
 
@@ -52,13 +74,13 @@ To ensure reproducibility, the full source code for this paper, together with da
 
 Conventions: lines beginning with > denote R code.
 
-\section{Patterns}
+% \section{Patterns}
 
-The format we use is:
+% The format we use is:
 
-\begin{itemize}
-  \item  
-\end{itemize}
+% \begin{itemize}
+%   \item  
+% \end{itemize}
 
 % Pattern name: a handle for the pattern
 % Problem: when to apply the pattern
