@@ -1,6 +1,7 @@
 patterns/*.tex
 patterns/*.pdf
 patterns/*.tmp
+introduction.tex
 *.aux
 *.glo
 *.idx

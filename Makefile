@@ -1,13 +1,20 @@
 FILENAME = dapse13-bugpatterns
 BIBFILENAME = $(FILENAME)
 
-all: sweave $(FILENAME).tex $(BIBFILENAME).bib
+.SUFFIXES: .tex .Rnw
+PATTERNS = $(wildcard *.Rnw)
+TEX = $(patsubst %.Rnw, %.tex, $(PATTERNS))
+
+all: patterns $(FILENAME).tex $(BIBFILENAME).bib $(TEX)
 	pdflatex $(FILENAME)
 	bibtex $(FILENAME)
 	pdflatex $(FILENAME)
 	pdflatex $(FILENAME)
 
-sweave:
+%.tex: %.Rnw
+	R CMD Sweave $<
+
+patterns:
 	$(MAKE) -C patterns
 
 view:

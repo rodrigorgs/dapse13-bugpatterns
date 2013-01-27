@@ -12,16 +12,29 @@ Each pattern is illustrated by examples when necessary. We show how to analyze B
 
 In the examples, we use three tables (i.e., R data frames) to store bug data. Such tables are based on Bugzilla's database schema, except some tables and columns are renamed for clarity.
 
-<<echo=false,results=hide>>=
-changes <- readRDS("data/netbeans-platform-changes.rds")
+The {\tt bugs} table contains general information about bugs, such as its creation time, the user who reported the bug and its last status.
+
+<<echo=FALSE, results=tex>>=
+library(xtable)
+bugs <- readRDS("data/netbeans-platform-bugs.rds")
+bugs <- head(bugs, 3)
+bugs$creation.time <- as.character(as.Date(bugs$creation.time))
+bugs$modif.time <- as.character(as.Date(bugs$modif.time))
+print(xtable(bugs), include.rownames=FALSE)
 @
 
-The {\tt bugs} table contains general information about bugs, such as its creation time, the user who reported the bug and its last status.
 
 The {\tt changes} table contains all changes ``suffered'' by all bugs over time.
 
-The {\tt comments} table contains comments.
+<<echo=FALSE, results=tex>>=
+library(xtable)
+changes <- readRDS("data/netbeans-platform-changes.rds")
+changes <- subset(changes, field %in% c("bug_status", "resolution"))[1:3,]
+changes$time <- as.character(changes$time)
+print(xtable(changes), include.rownames=FALSE)
+@
 
+The {\tt comments} table contains comments.
 
 is based no Bugzilla's database schema, 
 Data from other bts should be similar. 
