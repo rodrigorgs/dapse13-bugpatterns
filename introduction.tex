@@ -1,10 +1,30 @@
 \section{Introduction}
 
-Someone said that data analysis is easy, the hard part is cleaning the data. This is true also of bug databases. You deal with data that may be incomplete, inconsistent, or just plain wrong [cite Bird, Aranda etc.]. Without proper guidance, it is easy to get lost. We hope to provide some hints for those adventurous enough to analyse bug data, by suggesting some filtering, and also general analyses that support more specific analyses.
+Bug tracking systems store bug reports for a software project and keeps track of all progress and discussion for each bug. Therefore, they provide information not just about the defects on the software, but also about the development process. This is why bug reports are such an invaluable source of information for data scientists studying software.
 
-Conventions: lines beginning with > denote R code.
+However, bug tracking systems often contain data that is inaccurate~\cite{Antoniol2008}, biased~\cite{Bird2009}, or incomplete~\cite{Aranda2009}. \todo{expand on this idea}
 
-\section{Data}
+Without proper guidance, it is easy to overlook pitfalls in the data and draw wrong conclusions. In this paper, we hope to provide some hints for adventurous data scientists that intend to explore bug data, in the form of patterns\todo{explain briefly what are}. We suggest sources to find complementary information, step-by-step guides to clean up bug data, and analyses that lead to meaningful conclusions.
+
+\section{Data and Code}
+
+Each pattern is illustrated by examples when necessary. We show how to analyze Bugzilla\footnote{Bugzilla is a popular tracking system, available at \url{http://www.bugzilla.org/}} data using R\footnote{Available at \url{http://www.r-project.org/}}, a programming language for data analysis. The examples use data from the projects Eclipse and NetBeans, made available in the Mining Challenge of 2011\footnote{http://2011.msrconf.org/msr-challenge.html}. All the data and code used in the examples is available online\footnote{\url{https://github.com/rodrigorgs/dapse13-bugpatterns}}. 
+
+In the examples, we use three tables (i.e., R data frames) to store bug data. Such tables are based on Bugzilla's database schema, except some tables and columns are renamed for clarity.
+
+<<echo=false,results=hide>>=
+changes <- readRDS("data/netbeans-platform-changes.rds")
+@
+
+The {\tt bugs} table contains general information about bugs, such as its creation time, the user who reported the bug and its last status.
+
+The {\tt changes} table contains all changes ``suffered'' by all bugs over time.
+
+The {\tt comments} table contains comments.
+
+
+is based no Bugzilla's database schema, 
+Data from other bts should be similar. 
 
 The R snippets refer to data extracted from Bugzilla databases. Other databases may have different schemas, so the scripts may need to be adapted.
 
@@ -16,6 +36,8 @@ Let's assume that we have imported such tables as a R data frame.
 ...
 
 To ensure reproducibility, the full source code for this paper, together with data sets, is available at ...
+
+Conventions: lines beginning with > denote R code.
 
 \section{Patterns}
 
