@@ -3,7 +3,7 @@
 
 \Problem
 
-  Assess the association between two categorical variables while considering variables tha may mask the association.
+  Assess the association between two categorical variables while considering variables that may mask the association.
   /
   Discover categorical variables that mask the associaton between two other categorical variables.
 

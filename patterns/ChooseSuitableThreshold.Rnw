@@ -44,9 +44,9 @@ abline(v=20, lty=3)
 \Discussion
 
   Looking for a suitable threshold can be highly subjective, and depends on the problem at hand. For example, if the problem requires an answer with high precision, it is better to choose a more restrictive threshold. 
-  Sometimes, thresholds can be inferred from natural human limits. For example, how many bugs a developer can fix in a single day? A reasonable answer can be used as a threshold to filter out invalid data.
+  Sometimes, thresholds can be inferred from natural human limits. For example, how many bugs can a developer fix in a single day? A reasonable answer can be used as a threshold to filter out invalid data.
 
-  It can be that the metric chosen is not enough to distinguish between the two groups. In that case, choose another metric or a combination of metrics.
+  It can be that the metric chosen is not sufficient to distinguish between the two groups. In that case, choose another metric or a combination of metrics.
 
 \Example
 

@@ -20,11 +20,11 @@
 
   Bug reports change over time. Sometimes, one needs to classify a bug report according to the occurence of some change. For example, has a bug been fixed? Is this bug report a duplicate? A negative answer may turn into a positive one with the arrival of new data.
 
-  Therefore, for recent bugs, the outcome may still be unknown. For instance, when training a model to predict which bugs get reopened and which do not, it is likely that recent bugs have not been reopened---\emph{yet}, because some of them may be reopened in the future. The question is: how long to wait for the bug to be reopened before classifying it as not reopened?
+  Therefore, for recent bugs, the outcome may still be unknown. For instance, when training a model to predict which bugs get reopened and which do not, it is likely that recent bugs have not been reopened---\emph{yet}, because some of them may be in the future. The question is: how long to wait for the bug to be reopened before classifying it as not reopened?
 
 \Solution
 
-<<>>=
+<<echo=false,results=hide>>=
 changes <- readRDS("../data/netbeans-platform-changes.rds")
 bugs <- readRDS("../data/netbeans-platform-bugs.rds")
 @

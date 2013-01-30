@@ -4,19 +4,20 @@
 
 Bug tracking systems store bug reports for a software project and keep track of all progress and discussion for each bug. Therefore, they provide information not just about the defects on the software, but also about the development process. This is why bug reports are such an invaluable source of information for data scientists studying software.
 
-However, bug tracking systems often contain data that is inaccurate~\cite{Antoniol2008}, biased~\cite{Bird2009}, or incomplete~\cite{Aranda2009}. For example, marking a resolved bug as verified usually means that some kind of software verification (source code inspection, testing etc.) was performed and the resolution was considered appropriate. Sometimes, however, old bug reports are marked as verified to help users and developers keep track of current bug reports~\cite{Souza2012}.
+However, bug tracking systems often contain data that is inaccurate~\cite{Antoniol2008}, biased~\cite{Bird2009}, or incomplete~\cite{Aranda2009}. For example, changing the status of a bug report to {\tt VERIFIED} usually means that, after a resolution was found, some kind of software verification (source code inspection, testing etc.) was performed and the resolution was considered appropriate. Sometimes, however, old bug reports are marked as verified to help users and developers keep track of current bug reports~\cite{Souza2012}.
 
+\todo[inline]{fall into common mistakes}
 Without proper guidance, it is easy to overlook pitfalls in the data and draw wrong conclusions. In this paper, we provide best practices and step-by-step solutions to recurring problems from cleaning up bug data up to deriving meaningful conclusions from bug reports.
 
-Each solution is presented in a structured form called pattern. A pattern contains 7 sections: (1) a short \emph{name}; (2) the \emph{problem} being solved; (3) a \emph{context} in which the pattern can be applied; (4) one or more \emph{solutions} to the problem; (5) a \emph{discussion} of trade-offs and common mistakes to consider when using the pattern; (6) real-world or fictitious \emph{examples} of the pattern in use; (7) \emph{related patterns}. 
+Each solution is presented in a structured form called pattern. A pattern contains 7 sections: (1) a short \emph{name}; (2) the \emph{problem} being solved; (3) a \emph{context} in which the pattern can be applied; (4) one or more \emph{solutions} to the problem; (5) a \emph{discussion} of trade-offs and common mistakes to consider when using the pattern; (6) \emph{examples} of the pattern in use; (7) \emph{related patterns}. 
 
 \section{Data and Code}
 
-Each pattern is illustrated by examples when necessary. We show how to analyze Bugzilla\footnote{Bugzilla is a popular tracking system, available at \url{http://www.bugzilla.org/}} data using R\footnote{Available at \url{http://www.r-project.org/}}, a programming language for data analysis. The examples use data from the projects Eclipse and NetBeans, made available in the Mining Challenge of 2011\footnote{http://2011.msrconf.org/msr-challenge.html}. All the data and code used in the examples is available online\footnote{\url{https://github.com/rodrigorgs/dapse13-bugpatterns}}. 
+Each pattern is illustrated by examples when necessary. We show how to analyze Bugzilla\footnote{Bugzilla is a popular tracking system, available at \url{http://www.bugzilla.org/}} data using R, a programming language for data analysis\footnote{Available at \url{http://www.r-project.org/}}. The examples use data from the NetBeans/Platform project, made available in the Mining Challenge of 2011\footnote{http://2011.msrconf.org/msr-challenge.html}. All the data and code used in the examples is available online\footnote{\url{https://github.com/rodrigorgs/dapse13-bugpatterns}}. 
 
 In the examples, we use three tables (i.e., R data frames) to store bug data. Such tables are based on Bugzilla's database schema, except some tables and columns are renamed for clarity.
 
-The {\tt bugs} table contains general information about bug reports, which are identified by unique numbers (column {\tt bug}). Each bug report has a \emph{priority}, a \emph{severity}, and information about the time of creation ({\tt creation.time}), and the time of the last modification ({\tt modif.time}).
+The {\tt bugs} table contains general information about bug reports, which are identified by unique numbers (column {\tt bug}). Each bug report has a \emph{severity}, a \emph{priority}, and two timestamps: the time of creation ({\tt creation.time}), and the time of the last modification ({\tt modif.time}).
 
 <<echo=FALSE, results=tex>>=
 library(xtable)
@@ -41,11 +42,11 @@ changes$time <- as.character(as.Date(changes$time))
 print(xtable(changes), include.rownames=FALSE)
 @
 
-The \emph{status} field is used to keep track of the progress of the bug fixing activity. A bug reported is created with status {\tt NEW} or {\tt UNCONFIRMED}. Then, its status may be changed to {\tt ASSIGNED}, to denote that a user has taken responsibility on the bug. After that, the bug is {\tt RESOLVED}, then optionally {\tt VERIFIED} by the quality assurance team and {\tt CLOSED}, after the next software release comes out. If, after resolving the bug, someone finds that the resolution was not appropriate, the status is changed to {\tt REOPENED}.
+The \emph{status} field is used to keep track of the progress of the bug fixing activity. A bug report is created with status {\tt NEW} or {\tt UNCONFIRMED}. Then, its status may be changed to {\tt ASSIGNED}, to denote that a user has taken responsibility on the bug. After that, the bug is {\tt RESOLVED}, then optionally {\tt VERIFIED} by the quality assurance team and {\tt CLOSED}, after the next software release comes out. If, after resolving the bug, someone finds that the resolution was not appropriate, the status is changed to {\tt REOPENED}.
 
 There are many forms of resolving a bug. To reflect that, when a bug status is changed to {\tt RESOLVED}, the \emph{resolution} field is changed either to {\tt FIXED}---if the software was changed to solve the issue---, {\tt WORKSFORME}---if developers were not able to reproduce the problem---, {\tt DUPLICATE}---if a previous bug report describes the same problem---, among other resolutions.
 
-is based no Bugzilla's database schema, 
+\todo[inline]{is based no Bugzilla's database schema, 
 Data from other bts should be similar. 
 
 The R snippets refer to data extracted from Bugzilla databases. Other databases may have different schemas, so the scripts may need to be adapted.
@@ -57,3 +58,4 @@ The R snippets refer to data extracted from Bugzilla databases. Other databases 
 To ensure reproducibility, the full source code for this paper, together with data sets, is available at ...
 
 Conventions: lines beginning with > denote R code.
+}

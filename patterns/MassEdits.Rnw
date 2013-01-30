@@ -1,94 +1,56 @@
-\Name{Look Out For Mass Edits}
+\Name{Look Out For Mass Updates}
 % Look Out / Watch Out
-% Mass Edits / Bulk Edits
+% Mass updates / Bulk updates / batch modification
 
 \Problem
 
-  Discover changes to bug reports that were the result of a mass edit.
+  Discover changes to bug reports that were the result of a mass update.
 
 \Context
 
-  Changes to a bug report often the result of an effort made by developers to triage, fix or verify a bug. Such efforts take time. It is expected, for example, that a bug status is only changed to {\tt VERIFIED} after a developer spends some time creating test scenarios, running the software, inspecting the source code changes etc.
+  Changes to a bug report are often the result of an effort made by developers to triage, fix or verify a bug. Such efforts take time. It is expected, for example, that a bug status is only changed to {\tt VERIFIED} after a developer spends some time creating test scenarios, running the software, inspecting the source code changes etc.
 
-  However, on some bug data sets, one can find hundreds or thousands of bugs that are changed by the same developer within minutes or hours. These are mass edits and should not be interpreted as a burst of productivity. For example, if a developer changes the status of a thousand bug reports {\tt VERIFIED} within a few hours, it does not mean that he verified a thousand bugs --- that would be humanly impossible. More often than not, it just means that the repository needed some cleanup, by marking old bugs as {\tt VERIFIED} to help developers keep track of current problems.
+  However, on some bug data sets, one can find hundreds or thousands of bugs that are changed by the same developer within minutes or hours. These are mass updates and should not be interpreted as a burst of productivity. For example, if a developer changes the status of a thousand bug reports {\tt VERIFIED} within a few hours, it does not mean that he verified a thousand bugs --- that would be humanly impossible. More often than not, it just means that the repository needed some cleanup, by marking old bugs as {\tt VERIFIED} to help developers keep track of current issues.
 
-  When analyzing bug data, mass edits should be identified and removed from the data set, as they may distort the results.
+  Mass updates are characterized by a large number of changes of the same type (e.g., marking a bug report as {\tt VERIFIED} or changing a target milestone) made by a single developer in a short period of time. Often such changes are accompanied by a comment that is the same for all changes in the mass update.
+
+  When analyzing bug data, mass updates should be identified and removed from the data set, as they may distort the results.
 
   % Sometimes lots of bug reports are updated almost at the same time. 
-  % These mass edits are often a result of a cleanup due to process changes, or phase change. 
+  % These mass updates are often a result of a cleanup due to process changes, or phase change. 
   % They should not be regarded as actual effort, because they may influence statistic analysis. 
   % For example, when many bugs are marked as VERIFIED in a short amount of time, it usually does not mean that someone actually verified that the resolution for the bug was adequate, it just means that the bug database was cleaned up.
 
 \Solution
 
-  Mass edits are characterized by a large number of changes of the same type (e.g., marking a bug report as {\tt VERIFIED} or changing a target milestone) made by a single developer in a short period of time. Often such changes are accompanied by a comment that is the same for all changes in the mass edit.
+  %There at least three solutions to find mass updates: two based on number of changes over time, and one based on developer comments. 
+  Before applying a solution, a type of change must be chosen. In the following examples, it is assumed that we are interested in mass verifications, i.e., mass updates that change a bug status to {\tt VERIFIED}, but the solutions apply to other types of change as well.
 
-  There at least three solutions to find mass edits: two based on number of changes over time, and one based on developer comments. Before applying a solution, a type of change must be chosen. In the following examples, it is assumed that we are interested in mass verifications, i.e., mass edits that change a bug status to {\tt VERIFIED}, but the solutions apply to other types of change as well.
+  \emph{Solution 1}. The first solution is more visual, exploratory. Select only the changes that update the bug status to verified, along with the time of the change. Sort the changes by time and then plot the accumulated number of changes over time as a line chart.
 
-  \emph{Solution 1: plot the accumulated number of verifications over time and look for steep ascents}. The first solution is more visual, exploratory. Select only the changes that update the bug status to verified, along with the time of the change. Sort the changes by time and then plot the accumulated number of changes over time as a line chart.
+  The line is always increasing, but periods with many changes will stand out as steep ascents. Examine your vertical axis to assess whether such ascents represent a large number of changes (e.g., thousands). If this is the case, then it is likely that the changes were caused by a mass update.
 
-  The line is always increasing, but periods with many changes will stand out as steep ascents. Examine your vertical axis to assess whether such ascents represent a large number of changes (e.g., thousands). If this is the case, then it is likely that the changes were caused by a mass edit.
 
-  Here is the R code. Assume that {\tt changes} is the list of changes to bug reports in NetBeans/Platform. 
 
-<<echo=FALSE, results=hide>>=
-changes <- readRDS("../data/netbeans-platform-changes.rds")
-@
+%   \emph{Solution 2: count the number of changes per user per day}. Then, sort%  by number of changes, from highest to lowest, and select pairs (user, date) with a high number of changes. The changes that match the selected pairs (user, date) are likely to be mass updates.
+% 
+%   Here is the R code for the solution. Assume that {\tt ver} holds the data that was computed in the previous solution. The counts are computed using the {\tt count} function from the package {\tt plyr} and assgined to the variable {\tt cnt}. Here, the highest six counts are shown.
+% 
+% <<results=hide>>=
+% library(plyr)
+% ver$date <- as.Date(ver$time)
+% cnt <- count(ver, c("date", "user"))
+% cnt <- cnt[order(cnt$freq, decreasing=T), ]
+% head(cnt)
+% @
+% <<echo=FALSE, results=tex>>=
+% library(xtable)
+% x <- head(cnt)
+% x$date <- as.character(x$date)
+% print(xtable(x), include.rownames=FALSE)
+% @
 
-\todo[inline]{Center figure}
-<<fig=TRUE,width=6,height=5>>=
-ver <- subset(changes, field == "bug_status" 
-  & new.value == "VERIFIED")
-ver <- ver[order(ver$time), ]
-ver$n.changes <- 1:nrow(ver)
-with(ver, plot(n.changes ~ time, type="l"))
-@
-
-  In the chart, some line segments are almost vertical (e.g., the line between 2002 and 2004). Such segments mark dates when there were mass edits.
-
-  \emph{Solution 2: count the number of changes per user per day}. Then, sort by number of changes, from highest to lowest, and select pairs (user, date) with a high number of changes. The changes that match the selected pairs (user, date) are likely to be mass edits.
-
-  Here is the R code for the solution. Assume that {\tt ver} holds the data that was computed in the previous solution. The counts are computed using the {\tt count} function from the package {\tt plyr} and assgined to the variable {\tt cnt}. Here, the highest six counts are shown.
-
-  %This solution is similar to the previous one, but more determinate and less visual. 
-
-  %Then, look for high counts. As always, choose a threshold for the number of changes, so that higher numbers are evidence of mass edits. Assume that all changes made by the developer that day are the result of a mass edit.
-
-<<results=hide>>=
-library(plyr)
-ver$date <- as.Date(ver$time)
-cnt <- count(ver, c("date", "user"))
-cnt <- cnt[order(cnt$freq, decreasing=T), ]
-head(cnt)
-@
-<<echo=FALSE, results=tex>>=
-library(xtable)
-x <- head(cnt)
-x$date <- as.character(x$date)
-print(xtable(x), include.rownames=FALSE)
-@
-
-  \emph{Solution 3: count the number of changes per user per day with the same comment}. Same as before, except that the comment is taken into account. For optimization purposes, the comment text can be replaced by its MD5 hash (or another hash function).
-
-  Here is the R code. Assume that we have a {\tt comments} data frame. First, merge it with {\tt ver} to select only comments related to verifications. Then, do the counting as usual. Here, the 6 records with higher counts are shown.
-
-<<echo=FALSE, results=hide>>=
-comments <- readRDS("../data/netbeans-platform-comments.rds")
-@
-<<results=hide>>=
-library(plyr)
-full <- merge(ver, comments)
-cnt <- count(full, c("date", "user", 
-                     "comment.md5"))
-cnt <- cnt[order(cnt$freq, decreasing=T), ]
-head(cnt[, c("date", "user", "freq")])
-@
-<<echo=FALSE, results=tex>>=
-library(xtable)
-x <- head(cnt[, c("date", "user", "freq")])
-x$date <- as.character(x$date)
-print(xtable(x), include.rownames=FALSE)
-@
+  \emph{Solution 2}. Count how many times a day a user has changed a field in a bug report and used the same comment text. In other words, for each triple $\langle date, user, comment \rangle$, count the number of occurrences in the data set. Then, sort the triples by number of occurences. Triples with highest frequencies are good candidates for mass updates. You may analyse the comment text to see if they refer to cleanup, policy change or mass update in general.
 
 % #library(digest)
 % #comments$hash <- sapply(comments$text, digest) # or select md5() --SQL
@@ -103,14 +65,55 @@ print(xtable(x), include.rownames=FALSE)
 
 \Discussion
 
-  The first solution to find mass edits is more visual, but less accurate, as it does not take into account the user who made the changes, and also more subjective. The second solution is numeric and takes into account the users, but does not distinguish regular changes and mass edits if they were made by the same user in the same day. The third solution addresses this problem, but is more computationally intensive, as it involves user's comments.
-
+  The first solution to find mass updates is more visual, but less accurate, as it does not take into account the user who made the changes, and also more subjective. 
+  %The second solution is numeric and takes into account the users, but does not distinguish regular changes and mass updates if they were made by the same user in the same day. 
+  %The third solution addresses this problem, but is more computationally intensive, as it involves user's comments.
+  The second solution is numeric and takes into account the users and their comments, but is more computationally intensive.
 
 \Example
 
-  For example, Souza et al. \cite{Souza2012} used the first two solutions. They used the first solution to build the chart shown in their paper's Figure 2. Then, they used the second solution to find change bursts with more than 50 changes by the same user on the same day. Such changes were considered mass edits and consequently discarded.
+  For example, Souza et al. \cite{Souza2012} used the first two solutions. They used the first solution to build the chart shown in their paper's Figure 2. Then, they used the second solution to find change bursts with more than 50 changes by the same user on the same day. Such changes were considered mass updates and consequently discarded.
+
+  \emph{Solution 1}. Here is the R code. Assume that {\tt changes} is the list of changes to bug reports in NetBeans/Platform. 
+
+<<echo=FALSE, results=hide>>=
+changes <- readRDS("../data/netbeans-platform-changes.rds")
+@
+
+\todo[inline]{Center figure}
+<<fig=TRUE,width=6,height=5>>=
+ver <- subset(changes, field == "bug_status" 
+  & new.value == "VERIFIED")
+ver <- ver[order(ver$time), ]
+ver$n.changes <- 1:nrow(ver)
+with(ver, plot(n.changes ~ time, type="l"))
+@
+
+  In the chart, some line segments are almost vertical (e.g., the line between 2002 and 2004). Such segments mark dates when there were mass updates.
+
+  \emph{Solution 2}. Here is the R code. Assume that we have a {\tt comments} data frame. First, merge it with {\tt ver} to select only comments related to verifications. Then, do the counting as usual. Here, the 6 records with higher counts are shown.
+
+<<echo=FALSE, results=hide>>=
+comments <- readRDS("../data/netbeans-platform-comments.rds")
+@
+<<results=hide>>=
+library(plyr)
+ver$date <- as.Date(ver$time)
+full <- merge(ver, comments)
+cnt <- count(full, c("date", "user", 
+                     "comment.md5"))
+cnt <- cnt[order(cnt$freq, decreasing=T), ]
+head(cnt[, c("date", "user", "freq")])
+@
+<<echo=FALSE, results=tex>>=
+library(xtable)
+x <- head(cnt[, c("date", "user", "freq")])
+x$date <- as.character(x$date)
+print(xtable(x), include.rownames=FALSE)
+@
+
 
 \RelatedPatterns
 
-  How many changes in a day are considered normal and how many indicate mass edits? Be sure to [Choose a Suitable Threshold]. After finding mass edit candidates, it is a good idea to [Read the Fine Comments] to gain more confidence that the changes resulted from a mass edit.
+  How many changes in a day are considered normal and how many indicate mass updates? Be sure to [Choose a Suitable Threshold]. After finding mass update candidates, it is a good idea to [Read the Fine Comments] to gain more confidence that the changes resulted from a mass update.
 

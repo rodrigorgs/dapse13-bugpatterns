@@ -6,13 +6,13 @@
 
 \Context
 
-  Releases are important milestones in a project, as they represent the end of a development cycle. Different tasks may be performed based on the proximity of a release date. For example, verification and validation tasks are expected before a release, and users that are not developers only report bugs for a version after it has been released.
+  Releases are important milestones in a project, as they represent the end of a development cycle. Different development tasks may be performed based on the proximity of a release date. For example, verification and validation tasks are expected before a release, and final users only report bugs for a version after it has been released.
 
-  It should be easy for a data analyst to discover the release dates for the most recent versions of a project, as they are usually displayed on the download page. However, older release dates may not always be available.
+  It should be easy for a data scientist to discover the release dates for the most recent versions of a project, as they are usually displayed on the download page. However, older release dates may not always be available.
 
 \Solution
 
-  There are common solutions to this problem: one involves a version control system, and the other one, the project's website.
+  %There are two common solutions to this problem: one involves a version control system, and the other one, the project's website.
 
   \emph{Solution 1}. Some projects tag specific revisions of the source code maintained at a version control system. Identify tags that denote specific releases, by looking at the tag name. Consider the dates of these tags as release dates.
 
