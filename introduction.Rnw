@@ -1,8 +1,8 @@
 \section{Introduction}
 
-Bug tracking systems store bug reports for a software project and keep track of all progress and discussion for each bug. Therefore, they provide information not just about the defects on the software, but also about the development process. This is why bug reports are such an invaluable source of information for data scientists studying software.
+Bug tracking systems store bug reports for a software project and keep record of discussion and progress changes for each bug. This data can be used not only to assess quality attributes of the software, but also to reason about its development process. Such richness of information makes bug reports an invaluable source for data scientists interested in software engineering.
 
-However, bug tracking systems often contain data that is inaccurate~\cite{Antoniol2008}, biased~\cite{Bird2009}, or incomplete~\cite{Aranda2009}. For example, changing the status of a bug report to {\tt VERIFIED} usually means that, after a resolution was found, some kind of software verification (source code inspection, testing etc.) was performed and the resolution was considered appropriate. Sometimes, however, old bug reports are marked as verified just to help users and developers keep track of current bug reports~\cite{Souza2012}.
+However, bug tracking systems often contain data that is inaccurate~\cite{Antoniol2008}, biased~\cite{Bird2009}, or incomplete~\cite{Aranda2009}. For example, changing the status of a bug report to {\tt VERIFIED} usually means that, after a resolution was found to the bug, some kind of software verification (source code inspection, testing etc.) was performed and the resolution was considered appropriate. Sometimes, however, old bug reports are marked as verified just to help users and developers keep track of current bug reports~\cite{Souza2012}.
 
 %\todo[inline]{fall into common mistakes}
 Without proper guidance, it is easy to overlook pitfalls in the data and draw wrong conclusions. In this paper, we provide best practices and step-by-step solutions to recurring problems from cleaning up bug data up to deriving meaningful conclusions from bug reports.
