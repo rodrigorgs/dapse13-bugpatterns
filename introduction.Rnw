@@ -5,9 +5,9 @@ Bug tracking systems store bug reports for a software project and keep record of
 However, bug tracking systems often contain data that is inaccurate~\cite{Antoniol2008}, biased~\cite{Bird2009}, or incomplete~\cite{Aranda2009}. For example, changing the status of a bug report to {\tt VERIFIED} usually means that, after a resolution was found to the bug, some kind of software verification (source code inspection, testing etc.) was performed and the resolution was considered appropriate. Sometimes, however, old bug reports are marked as verified just to help users and developers keep track of current bug reports~\cite{Souza2012}.
 
 %\todo[inline]{fall into common mistakes}
-Without proper guidance, it is easy to overlook pitfalls in the data and draw wrong conclusions. In this paper, we provide best practices and step-by-step solutions to recurring problems from cleaning up bug data up to deriving meaningful conclusions from bug reports.
+Without proper guidance, it is easy to overlook pitfalls in the data and draw wrong conclusions. In this paper, we provide best practices and step-by-step solutions to recurring problems related to cleaning bug data. %from cleaning up bug data up to deriving meaningful conclusions from bug reports.
 
-Each solution is presented in a structured form called pattern. A pattern consists of 7 sections: (1) a short \emph{name}; (2) the \emph{problem} being solved; (3) a \emph{context} in which the pattern can be applied; (4) one or more \emph{solutions} to the problem; (5) a \emph{discussion} of trade-offs and common mistakes to consider when using the pattern; (6) \emph{examples} of the pattern in use; (7) \emph{related patterns}. 
+Each solution is presented in a structured form called pattern. A pattern consists of 6 sections: (1) a short \emph{name}; (2) the \emph{problem} being solved; (3) a \emph{context} in which the pattern can be applied; (4) one or more \emph{solutions} to the problem; (5) a \emph{discussion} of trade-offs and common mistakes to consider when using the pattern; and (6) \emph{examples} of the pattern in use. %; (7) \emph{related patterns}. 
 
 \section{Data Set}
 
@@ -46,7 +46,7 @@ x <- xtable(comments,
 print(x, include.rownames=FALSE)
 @
 
-The {\tt changes} table contains all modifications made by users on bug reports over time. This includes changes in priority, status, resolution, and virtually any other field in a bug report. Each row contains the {\tt new value} of a {\tt field} that was modified by a {\tt user}\footnote{In this context, user denotes a user of the bug tracking system, which can be a developer or a final user.} at some point in {\tt time}. Table~\ref{tab:changes} shows a sample of the {\tt bugs table}.
+The {\tt changes} table contains all modifications made by users on bug reports over time. This includes changes in priority, status, resolution, and virtually any other field in a bug report. Each row contains the {\tt new value} of a {\tt field} that was modified by a {\tt user}\footnote{In this context, user denotes a user of the bug tracking system, which can be a developer or a final user.} at some point in {\tt time}. Table~\ref{tab:changes} shows a sample of the {\tt bugs} table.
 
 <<echo=FALSE, results=tex>>=
 library(xtable)

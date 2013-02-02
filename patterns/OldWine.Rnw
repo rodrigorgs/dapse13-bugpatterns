@@ -87,6 +87,6 @@ valid.bugs <- subset(bugs, life.span >= threshold)
 
 \Example
 
-\RelatedPatterns
+% \RelatedPatterns
 
-Be sure to [Choose a Suitable Threshold].
+% Be sure to [Choose a Suitable Threshold].

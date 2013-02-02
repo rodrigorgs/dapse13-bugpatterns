@@ -74,9 +74,9 @@ print(xtable(x), include.rownames=FALSE)
 @
 
 
-\RelatedPatterns
+% \RelatedPatterns
 
-  How many changes in a day are considered normal and how many indicate mass updates? Be sure to Choose a Suitable Threshold (Section \ref{pat:threshold}).
+%   How many changes in a day are considered normal and how many indicate mass updates? Be sure to Choose a Suitable Threshold (Section \ref{pat:threshold}).
 
   %After finding mass update candidates, it is a good idea to [Read the Fine Comments] to gain more confidence that the changes resulted from a mass update.
 
