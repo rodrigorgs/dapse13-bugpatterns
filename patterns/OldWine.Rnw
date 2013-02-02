@@ -75,18 +75,15 @@ valid.bugs <- subset(bugs, life.span >= threshold)
 
   The choice of a threshold can be based on the desired confidence that current data can be extrapolated to the future. For example, consider a confidence level of 0.95 that bugs that were not reopened within a time span will not ever be reopened. The confidence can be approximated as the probability that a bug will never reopen divided by the probability that a bug will not reopen within the given time span\footnote{The proof is a direct application of Bayes' theorem.}.
 
-<<>>=
-threshold <- 100
-p.never.reopened <- 1 - (nrow(rebugs) / nrow(bugs))
-prob.not.reopened.within.timespan <-
-  ((nrow(bugs) - nrow(rebugs)) + sum(rebugs$span > threshold)) / nrow(bugs)
-confidence <- p.never.reopened / prob.not.reopened.within.timespan
-@
+% <<>>=
+% threshold <- 100
+% p.never.reopened <- 1 - (nrow(rebugs) / nrow(bugs))
+% prob.not.reopened.within.timespan <-
+%   ((nrow(bugs) - nrow(rebugs)) + sum(rebugs$span > threshold)) / nrow(bugs)
+% confidence <- p.never.reopened / prob.not.reopened.within.timespan
+% @
 
-  The confidence for a threshold of \Sexpr{threshold} days is \Sexpr{format(round(confidence, 2), nsmall = 2)}.
-
-
-
+%   The confidence for a threshold of \xxxxxSexpr{threshold} days is \xxxxxxSexpr{format(round(confidence, 2), nsmall = 2)}.
 
 \Example
 

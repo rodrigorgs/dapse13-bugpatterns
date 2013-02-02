@@ -1,4 +1,4 @@
-\Name{Choose a Suitable Threshold}
+\Name{Choose a Suitable Threshold} \label{pat:threshold}
 
 \Problem
 

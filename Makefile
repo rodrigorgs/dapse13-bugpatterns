@@ -5,7 +5,7 @@ BIBFILENAME = $(FILENAME)
 PATTERNS = $(wildcard *.Rnw)
 TEX = $(patsubst %.Rnw, %.tex, $(PATTERNS))
 
-all: patterns $(FILENAME).tex $(BIBFILENAME).bib $(TEX)
+all: patterns $(FILENAME).tex $(BIBFILENAME).bib $(TEX) contents.tex abstract.tex custom.tex title.tex
 	pdflatex $(FILENAME)
 	bibtex $(FILENAME)
 	pdflatex $(FILENAME)

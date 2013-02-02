@@ -8,80 +8,39 @@
 
 \Context
 
-  Changes to a bug report are often the result of an effort made by developers to triage, fix or verify a bug. Such efforts take time. It is expected, for example, that a bug status is only changed to {\tt VERIFIED} after a developer spends some time creating test scenarios, running the software, inspecting the source code changes etc.
+  Changes to a bug report are often the result of an effort made by developers to triage, fix or verify a bug. Sometimes, however, hundreds or thousands of bug reports are changed almost simultaneously. Such changes are not caused by a burst of productivity; instead, they are the result of a mass update, often done with the purpose of cleaning up the bug tracking system.
 
-  However, on some bug data sets, one can find hundreds or thousands of bugs that are changed by the same developer within minutes or hours. These are mass updates and should not be interpreted as a burst of productivity. For example, if a developer changes the status of a thousand bug reports {\tt VERIFIED} within a few hours, it does not mean that he verified a thousand bugs --- that would be humanly impossible. More often than not, it just means that the repository needed some cleanup, by marking old bugs as {\tt VERIFIED} to help developers keep track of current issues.
+  Mass updates can be motivated by a policy change. In Eclipse Modeling Framework, for instance, developers decided that bug reports containing fixes that were already published on their website should have the status {\tt VERIFIED}. A mass status update was needed to make previous bug reports conform to the new policy.
 
-  Mass updates are characterized by a large number of changes of the same type (e.g., marking a bug report as {\tt VERIFIED} or changing a target milestone) made by a single developer in a short period of time. Often such changes are accompanied by a comment that is the same for all changes in the mass update.
-
-  When analyzing bug data, mass updates should be identified and removed from the data set, as they may distort the results.
-
-  % Sometimes lots of bug reports are updated almost at the same time. 
-  % These mass updates are often a result of a cleanup due to process changes, or phase change. 
-  % They should not be regarded as actual effort, because they may influence statistic analysis. 
-  % For example, when many bugs are marked as VERIFIED in a short amount of time, it usually does not mean that someone actually verified that the resolution for the bug was adequate, it just means that the bug database was cleaned up.
+  Mass updates are characterized by a large number of changes of the \emph{same type} (e.g., marking a bug report as {\tt VERIFIED} or changing a target milestone) made by a single developer in a short period of time. Often such changes are accompanied by a comment that is the same for all changes in the mass update.
 
 \Solution
 
-  %There at least three solutions to find mass updates: two based on number of changes over time, and one based on developer comments. 
-  Before applying a solution, a type of change must be chosen. In the following examples, it is assumed that we are interested in mass verifications, i.e., mass updates that change a bug status to {\tt VERIFIED}, but the solutions apply to other types of change as well.
+  First, choose the type of change that you wish to analyze (e.g., changing a bug status to {\tt VERIFIED}). Then apply one of the following solutions. 
 
-  \emph{Solution 1}. The first solution is more visual, exploratory. Select only the changes that update the bug status to verified, along with the time of the change. Sort the changes by time and then plot the accumulated number of changes over time as a line chart.
+  \emph{Solution 1}. Select only the changes of the chosen type, along with the time of the change. Sort the changes by time and then plot the accumulated number of changes over time as a line chart.
 
   The line is always increasing, but periods with many changes will stand out as steep ascents. Examine your vertical axis to assess whether such ascents represent a large number of changes (e.g., thousands). If this is the case, then it is likely that the changes were caused by a mass update.
 
-
-
-%   \emph{Solution 2: count the number of changes per user per day}. Then, sort%  by number of changes, from highest to lowest, and select pairs (user, date) with a high number of changes. The changes that match the selected pairs (user, date) are likely to be mass updates.
-% 
-%   Here is the R code for the solution. Assume that {\tt ver} holds the data that was computed in the previous solution. The counts are computed using the {\tt count} function from the package {\tt plyr} and assgined to the variable {\tt cnt}. Here, the highest six counts are shown.
-% 
-% <<results=hide>>=
-% library(plyr)
-% ver$date <- as.Date(ver$time)
-% cnt <- count(ver, c("date", "user"))
-% cnt <- cnt[order(cnt$freq, decreasing=T), ]
-% head(cnt)
-% @
-% <<echo=FALSE, results=tex>>=
-% library(xtable)
-% x <- head(cnt)
-% x$date <- as.character(x$date)
-% print(xtable(x), include.rownames=FALSE)
-% @
-
-  \emph{Solution 2}. Count how many times a day a user has changed a field in a bug report and used the same comment text. In other words, for each triple $\langle date, user, comment \rangle$, count the number of occurrences in the data set. Then, sort the triples by number of occurences. Triples with highest frequencies are good candidates for mass updates. You may analyse the comment text to see if they refer to cleanup, policy change or mass update in general.
-
-% #library(digest)
-% #comments$hash <- sapply(comments$text, digest) # or select md5() --SQL
-% #comments$date <- as.Date(comments$time)
-% #
-% #tab <- count(comments, c("hash", "date"))
-% #tab <- tab[order(tab$freq, decreasing=TRUE), ]
-% #head(tab)
-% @
-
-  % sql: SELECT order_id,product_name,qty FROM orders INTO OUTFILE '/tmp/orders.txt'
+  \emph{Solution 2}. Select only the changes of the chosen type, along with the date of the change, the user who made the change and the comment. Then, for each triple $\langle date, user, comment \rangle$, count the number of occurrences in the data set. Then, sort the triples by number of occurences. Triples with highest frequencies are good candidates for mass updates. You may analyse the comment text to see if they refer to cleanup, policy change or mass update in general.
 
 \Discussion
 
-  The first solution to find mass updates is more visual, but less accurate, as it does not take into account the user who made the changes, and also more subjective. 
-  %The second solution is numeric and takes into account the users, but does not distinguish regular changes and mass updates if they were made by the same user in the same day. 
-  %The third solution addresses this problem, but is more computationally intensive, as it involves user's comments.
+  The first solution to find mass updates is more visual, but less accurate, as it does not take into account the user who made the changes. It is useful for a quick exploratory assessment of mass updates.
   The second solution is numeric and takes into account the users and their comments, but is more computationally intensive.
 
 \Example
 
-  For example, Souza et al. \cite{Souza2012} used the first two solutions. They used the first solution to build the chart shown in their paper's Figure 2. Then, they used the second solution to find change bursts with more than 50 changes by the same user on the same day. Such changes were considered mass updates and consequently discarded.
+  For example, Souza et al. \cite{Souza2012} used the first solution (see Figure 2 in their paper) and a variation of the second without taking comments into account to detect mass verifications (i.e., changes in which the status is set to {\tt VERIFIED}). They discarded all changes that were part of a mass update which updated at least 50 bug reports.
 
-  \emph{Solution 1}. Here is the R code. Assume that {\tt changes} is the list of changes to bug reports in NetBeans/Platform. 
+  \emph{Solution 1}. Here is a sample R code to plot the accumulated number of verifications over time.
 
 <<echo=FALSE, results=hide>>=
 changes <- readRDS("../data/netbeans-platform-changes.rds")
 @
 
 \todo[inline]{Center figure}
-<<fig=TRUE,width=6,height=5>>=
+<<fig=TRUE,width=6,height=4>>=
 ver <- subset(changes, field == "bug_status" 
   & new.value == "VERIFIED")
 ver <- ver[order(ver$time), ]
@@ -89,15 +48,17 @@ ver$n.changes <- 1:nrow(ver)
 with(ver, plot(n.changes ~ time, type="l"))
 @
 
-  In the chart, some line segments are almost vertical (e.g., the line between 2002 and 2004). Such segments mark dates when there were mass updates.
+  In this chart, some line segments are almost vertical (e.g., the line between 2002 and 2004). Such segments mark dates when there were mass updates.
 
-  \emph{Solution 2}. Here is the R code. Assume that we have a {\tt comments} data frame. First, merge it with {\tt ver} to select only comments related to verifications. Then, do the counting as usual. Here, the 6 records with higher counts are shown.
+  \emph{Solution 2}. Here is a sample R code to count updates by user, date, and comment. First, select only verifications, and then use the {\tt merge} operation to associate them with their respective comments. After that, do the counting as usual. Here, the 6 records with higher counts are shown.
 
 <<echo=FALSE, results=hide>>=
 comments <- readRDS("../data/netbeans-platform-comments.rds")
 @
 <<results=hide>>=
 library(plyr)
+ver <- subset(changes, field == "bug_status" 
+  & new.value == "VERIFIED")
 ver$date <- as.Date(ver$time)
 full <- merge(ver, comments)
 cnt <- count(full, c("date", "user", 
@@ -115,5 +76,7 @@ print(xtable(x), include.rownames=FALSE)
 
 \RelatedPatterns
 
-  How many changes in a day are considered normal and how many indicate mass updates? Be sure to [Choose a Suitable Threshold]. After finding mass update candidates, it is a good idea to [Read the Fine Comments] to gain more confidence that the changes resulted from a mass update.
+  How many changes in a day are considered normal and how many indicate mass updates? Be sure to Choose a Suitable Threshold (Section \ref{pat:threshold}).
+
+  %After finding mass update candidates, it is a good idea to [Read the Fine Comments] to gain more confidence that the changes resulted from a mass update.
 
