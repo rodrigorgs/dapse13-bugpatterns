@@ -6,7 +6,7 @@
 
 \Problem
   
-  Discard bug reports that are work in progress.
+  Discard bug reports that are too recent to be classified.
 
   %Find bugs whose outcome is not yet known.
   %Discard bug reports that may have a long future ahead.
@@ -16,9 +16,9 @@
 
 \Context
 
-  Bug reports change over time. Sometimes, one needs to classify a bug report according to the eventual occurence of some change. For example, has a bug been fixed? Is this bug report a duplicate? A negative answer may turn into a positive one with the arrival of new data.
+  Bug reports change over time. Sometimes, one needs to classify a bug report according to the eventual occurence of some change. For example, has a bug been fixed (or will it, eventually)? Is this a bug that was or will be reopened, or it will never be reopened? 
 
-  Therefore, for recent bugs, the outcome may still be unknown. For instance, when training a model to predict which bugs get reopened and which do not, it is likely that recent bugs have not been reopened---\emph{yet}, because some of them may be in the future. The question is: how long to wait for a change to happen before assuming that it will not evenutally happen? %the bug to be reopened before classifying it as not reopened?
+  While for older bugs such questions can be answered with high confidence, for bugs that are too recent, the change we are interested may not have happened---\emph{yet}. The question is how long to wait for the change to happen before assuming that it will never happen for a particular bug report.
 
 \Solution
 
@@ -27,17 +27,15 @@ changes <- readRDS("../data/netbeans-platform-changes.rds")
 bugs <- readRDS("../data/netbeans-platform-bugs.rds")
 @
 
-  For the sake of clarity, assume that you're interested in classifying bug reports according to whether they are eventually reopened or not. It should be easy to adapt this solution to any other outcome.
+  For the sake of example, consider we are studying bug reopenings. If the data shows that a bug report was reopened some day, classify it as a reopening bug. If not, then consider its lifetime, from creation to the last date available in the data. If the lifetime is long enough (i.e., it is above some \emph{threshold}), then classify it as non-reopening, which means that the bug was not and, with high confidence, will never be reopened. If the lifetime is short, however, it is hard to predict whether the bug report will eventually reopen, hence discard it from the analysis.
 
-  If a bug report is reopened within the available data, classify it as reopened. If not, then consider its lifetime, from creation to the last date available in the data. If the lifetime is long enough so that reopened bugs are expected to reopen within this time (i.e., it is above some \emph{threshold}), then classify it as non-reopened. If the lifetime is short, however, it is hard to predict whether the bug report will eventually reopen, so just discard the bug from the analysis.
-
-  So, first of all, choose a threshold. Then, compute the probability that, given that a bug report did not reopen within the threshold, it will never reopen (let's call it $\alpha$, or confidence). To do that, compute the proportion of bug reports that were reopened, $r$. Then, compute the proportion of older bug reports (i.e., which have lifetime greater than the threshold) that were not reopened within the threshold, $t$. The probability $\alpha$ can be approximated by the quotient $\sfrac{r}{t}$.
+  So, first of all, choose a threshold. Then, compute the probability that, given that a bug report did not reopen within the threshold, it will never reopen (let's call it $\alpha$, or confidence). To do that, compute the proportion of bug reports that were reopened, $r$. Then, compute the proportion of older bug reports (i.e., which have a lifetime greater than the threshold) that were not reopened within the threshold, $t$. The probability $\alpha$ can be approximated by the quotient $\sfrac{r}{t}$.
 
   Assess whether the probability $\alpha$ is high enough (most data scientists find $0.95$ to be an acceptable value). If it is not, choose another threshold and recompute $\alpha$ until you are satisfied. After finding an appropriate threshold, discard bugs with lifetime shorter than the threshold.
 
 \Discussion
 
-  It is a common mistake to keep recent temporal data in analyses. This is equivalent to choosing a threshold of 0.
+  It is a common mistake to keep recent bug reports. This is equivalent to choosing a threshold of 0, a value that is too optimistic.
 
 \Example
 
@@ -77,7 +75,7 @@ percent.discarded <- format(round(percent.discarded, 1), nsmall = 1)
 percent.discarded
 @
 
-  In this case, $\alpha = \Sexpr{alpha.2d}$, which is acceptable. Therefore, you should only keep bug reports older than 42 days---which are already stored in the variable {\tt older}---and discard the rest. In this case, only $\Sexpr{percent.discarded}\%$ of the bugs needed to be discarded.
+  In this case, we find $\alpha = \Sexpr{alpha.2d}$, which is acceptable. Therefore, you should analyze only bug reports older than 42 days---which are already stored in the variable {\tt older}---and discard the rest. In this case, $\Sexpr{percent.discarded}\%$ of the bugs needed to be discarded.
 
 % \RelatedPatterns
 

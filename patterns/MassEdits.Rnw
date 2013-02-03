@@ -69,7 +69,7 @@ head(cnt[, c("date", "user", "freq")])
 library(xtable)
 x <- head(cnt[, c("date", "user", "freq")])
 x$date <- as.character(x$date)
-print(xtable(x), include.rownames=FALSE)
+print(xtable(x), include.rownames=FALSE, caption.placement="top")
 @
 
 
