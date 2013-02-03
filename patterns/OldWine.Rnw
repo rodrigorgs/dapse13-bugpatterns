@@ -2,7 +2,7 @@
 
 %[numeric analysis (filtering)] [generic domain]
 
-\todo[inline]{aka Let them mature / give 'em some time / a long future ahead / the benefit of the doubt}
+%\todo[inline]{aka Let them mature / give 'em some time / a long future ahead / the benefit of the doubt}
 
 \Problem
   
@@ -16,11 +16,9 @@
 
 \Context
 
-  \todo[inline]{Temporal logic: bugs that will, \emph{eventually}, be reopened.}
+  Bug reports change over time. Sometimes, one needs to classify a bug report according to the eventual occurence of some change. For example, has a bug been fixed? Is this bug report a duplicate? A negative answer may turn into a positive one with the arrival of new data.
 
-  Bug reports change over time. Sometimes, one needs to classify a bug report according to the occurence of some change. For example, has a bug been fixed? Is this bug report a duplicate? A negative answer may turn into a positive one with the arrival of new data.
-
-  Therefore, for recent bugs, the outcome may still be unknown. For instance, when training a model to predict which bugs get reopened and which do not, it is likely that recent bugs have not been reopened---\emph{yet}, because some of them may be in the future. The question is: how long to wait for the bug to be reopened before classifying it as not reopened?
+  Therefore, for recent bugs, the outcome may still be unknown. For instance, when training a model to predict which bugs get reopened and which do not, it is likely that recent bugs have not been reopened---\emph{yet}, because some of them may be in the future. The question is: how long to wait for a change to happen before assuming that it will not evenutally happen? %the bug to be reopened before classifying it as not reopened?
 
 \Solution
 
@@ -29,63 +27,57 @@ changes <- readRDS("../data/netbeans-platform-changes.rds")
 bugs <- readRDS("../data/netbeans-platform-bugs.rds")
 @
 
-  Analyze the time spans of bug reports from their creation to the outcome being studied. For example, let's consider bug reopenings as the outcome. Select only reopened bugs and use a box plot or a density plot to visualize the distribution of time spans from creation to reopening. Then choose a threshold. It should be a time span that is large enough so that most reopened bug reports are reopened within that span. R code:
+  For the sake of clarity, assume that you're interested in classifying bug reports according to whether they are eventually reopened or not. It should be easy to adapt this solution to any other outcome.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-<<fig=TRUE,width=6,height=4>>=
-library(data.table)
-changes <- data.table(changes)
-reopenings <- changes[
-  field == "bug_status" & new.value == "REOPENED",
-  list(first.reopen = min(time)),
-  by=bug]
-rebugs <- merge(bugs, reopenings)
-rebugs$span <- as.numeric(
-	rebugs$first.reopen - rebugs$creation.time, 
-	units="days")
-plot(density(1 + rebugs$span), log="x")
-abline(v=100, lty=3)
-@
+  If a bug report is reopened within the available data, classify it as reopened. If not, then consider its lifetime, from creation to the last date available in the data. If the lifetime is long enough so that reopened bugs are expected to reopen within this time (i.e., it is above some \emph{threshold}), then classify it as non-reopened. If the lifetime is short, however, it is hard to predict whether the bug report will eventually reopen, so just discard the bug from the analysis.
 
-  Suppose 100 days was chosen as threshold. Now, compute the life span of the bug reports, from their creation to the time of the last change in the data set. Discard all bugs whose life span is less than the threshold. Such bugs are too recent: they do not have enough data to conclude if they will be reopened or not.
+  So, first of all, choose a threshold. Then, compute the probability that, given that a bug report did not reopen within the threshold, it will never reopen (let's call it $\alpha$, or confidence). To do that, compute the proportion of bug reports that were reopened, $r$. Then, compute the proportion of older bug reports (i.e., which have lifetime greater than the threshold) that were not reopened within the threshold, $t$. The probability $\alpha$ can be approximated by the quotient $\sfrac{r}{t}$.
 
-<<>>=
-threshold <- 100
-present <- max(changes$time)
-bugs$life.span <- present - bugs$creation.time
-valid.bugs <- subset(bugs, life.span >= threshold)
-@
-
-  After discarding recent bugs according to this criteria, assume that bugs that were not reopened will also never be reopened in the future.
-
-
-% <<>>=
-% bugs$life.span <- as.numeric(
-% 	bugs$modif.time - bugs$creation.time, 
-% 	units="days")
-% valid.bugs <- subset(bugs, life.span >= threshold)
-% nrow(valid.bugs) / nrow(bugs)
-% @
-
-% plot(1:99/100, sapply(1:99 / 100, function(q) mean(bugs$life.span >= quantile(d$span, q) ) ), xlab="time span percentile", ylab="% valid bugs")      ## cost-benefit analysis, compromise between large span and number of valid bugs
+  Assess whether the probability $\alpha$ is high enough (most data scientists find $0.95$ to be an acceptable value). If it is not, choose another threshold and recompute $\alpha$ until you are satisfied. After finding an appropriate threshold, discard bugs with lifetime shorter than the threshold.
 
 \Discussion
 
-  It is a common mistake to keep recent temporal data in analyses. This is equivalent to choosing a threshold of 0, i.e., even if data is limited to a few days, current information is used to predict the future.
-
-  The choice of a threshold can be based on the desired confidence that current data can be extrapolated to the future. For example, consider a confidence level of 0.95 that bugs that were not reopened within a time span will not ever be reopened. The confidence can be approximated as the probability that a bug will never reopen divided by the probability that a bug will not reopen within the given time span\footnote{The proof is a direct application of Bayes' theorem.}.
-
-% <<>>=
-% threshold <- 100
-% p.never.reopened <- 1 - (nrow(rebugs) / nrow(bugs))
-% prob.not.reopened.within.timespan <-
-%   ((nrow(bugs) - nrow(rebugs)) + sum(rebugs$span > threshold)) / nrow(bugs)
-% confidence <- p.never.reopened / prob.not.reopened.within.timespan
-% @
-
-%   The confidence for a threshold of \xxxxxSexpr{threshold} days is \xxxxxxSexpr{format(round(confidence, 2), nsmall = 2)}.
+  It is a common mistake to keep recent temporal data in analyses. This is equivalent to choosing a threshold of 0.
 
 \Example
+
+  Here's how to apply this pattern using R to analyze bug reopening. First of all, create a data frame {\tt data}, augmenting {\tt bugs} with information about their first reopening and their lifetime.
+
+<<>>=
+library(data.table)
+reopenings <- data.table(changes)[
+  field == "bug_status" & new.value == "REOPENED",
+  list(time.first.reopen = min(time)), by=bug]
+data <- merge(bugs, reopenings, all.x=T)
+data$days.to.reopen <- as.numeric(
+  data$time.first.reopen - data$creation.time, 
+  units="days")
+last.time <- max(data$modif.time)
+data$lifetime <- as.numeric(
+  last.time - data$creation.time, 
+  units="days")
+@
+
+  In this example, we use a threshold of 42 days (6 weeks). Use it to compute $\alpha$ ({\tt alpha}):
+
+<<>>=
+threshold <- 42
+older <- subset(data, lifetime > threshold)
+r <- sum(is.na(data$days.to.reopen)) / nrow(data)
+t <- sum(is.na(older$days.to.reopen) 
+  | older$days.to.reopen > threshold) / nrow(older)
+alpha <- r / t
+@
+
+<<echo=false,results=hide>>=
+alpha.2d <- format(round(alpha, 2), nsmall = 2)
+proportion.discarded <- 1 - (nrow(older) / nrow(data))
+percent.discarded <- 100 * proportion.discarded
+percent.discarded <- format(round(percent.discarded, 1), nsmall = 1)
+percent.discarded
+@
+
+  In this case, $\alpha = \Sexpr{alpha.2d}$, which is acceptable. Therefore, you should only keep bug reports older than 42 days---which are already stored in the variable {\tt older}---and discard the rest. In this case, only $\Sexpr{percent.discarded}\%$ of the bugs needed to be discarded.
 
 % \RelatedPatterns
 
