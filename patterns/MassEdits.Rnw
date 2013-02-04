@@ -8,9 +8,9 @@
 
 \Context
 
-  Changes to a bug report are often the result of an effort made by developers to triage, fix or verify a bug. Sometimes, however, hundreds or thousands of bug reports are changed almost simultaneously. Such changes are not caused by a burst of productivity; instead, they are the result of a mass update, often done with the purpose of cleaning up the bug tracking system.
+  Changes to a bug report are often the result of an effort made by developers to triage, fix or verify a bug. Sometimes, however, hundreds or thousands of bug reports are changed almost simultaneously. Such changes are not caused by a burst of productivity; instead, they are the result of a mass update, often performed with the purpose of cleaning up the bug tracking system.
 
-  Mass updates can be motivated by a policy change. In Eclipse Modeling Framework, for instance, developers decided that bug reports containing fixes that were already published on their website should have the status {\tt VERIFIED}. A mass status update was needed to make previous bug reports conform to the new policy.
+  Mass updates can also be motivated by a policy change. In Eclipse Modeling Framework, for instance, developers decided that bug reports containing fixes that were already published on their website should have the status {\tt VERIFIED}\footnote{Source: \url{http://wiki.eclipse.org/Modeling_PMC_Meeting,_2007-10-16}}. A mass status update was needed to make previous bug reports conform to the new policy.
 
   Mass updates are characterized by a large number of changes of the \emph{same type} (e.g., marking a bug report as {\tt VERIFIED} or changing a target milestone) made by a single developer in a short period of time. Often such changes are accompanied by a comment that is the same for all changes in the mass update.
 
@@ -20,9 +20,9 @@
 
   \emph{Solution 1}. Select only the changes of the chosen type, along with the time of the change. Sort the changes by time and then plot the accumulated number of changes over time as a line chart.
 
-  The line is always increasing, but periods with many changes will stand out as steep ascents. Examine your vertical axis to assess whether such ascents represent a large number of changes (e.g., thousands). If this is the case, then it is likely that the changes were caused by a mass update.
+  The line is monotonically increasing, but periods with a large number of changes will stand out as steep ascents. Examine the vertical axis to assess whether such ascents represent a large number of changes (e.g., thousands). If this is the case, then it is likely that the changes were caused by a mass update.
 
-  \emph{Solution 2}. Select only the changes of the chosen type, along with the date of the change, the user who made the change and the comment. Then, for each triple $\langle date, user, comment \rangle$, count the number of occurrences in the data set. Then, sort the triples by number of occurences. Triples with highest frequencies are good candidates for mass updates. You may analyse the comment text to see if they refer to cleanup, policy change or mass update in general.
+  \emph{Solution 2}. Select only the changes of the chosen type, along with the date of the change, the user who made the change and the comment. Then, group by similar triples $\langle date, user, comment \rangle$, and sort them by number of occurrences. Triples with frequency above a given threshold (e.g., hundreds) are good candidates for mass updates. You may read the comment text and look for references to cleanup, policy change or mass update.
 
 \Discussion
 
@@ -31,7 +31,7 @@
 
 \Example
 
-  For example, Souza et al. \cite{Souza2012} used the first solution (see Figure 2 in their paper) and a variation of the second without taking comments into account to detect mass verifications (i.e., changes in which the status is set to {\tt VERIFIED}). They discarded all changes that were part of a mass update which updated at least 50 bug reports.
+  For example, Souza and Chavez~\cite{Souza2012} used the first solution (see Figure 2 in their paper) and a variation of the second without taking comments into account to detect mass verifications (i.e., changes whose status is set to {\tt VERIFIED}). They discarded all changes that were part of a mass update which updated at least 50 bug reports.
 
   \emph{Solution 1}. Here is a sample R code to plot the accumulated number of verifications over time.
 
@@ -47,9 +47,9 @@ ver$n.changes <- 1:nrow(ver)
 with(ver, plot(n.changes ~ time, type="l"))
 @
 
-  In this chart, some line segments are almost vertical (e.g., the line between 2002 and 2004). Such segments mark dates when there were mass updates.
+  In this chart, some line segments are almost vertical (e.g., the line between 2002 and 2004). Such segments mark dates with mass updates.
 
-  \emph{Solution 2}. Here is a sample R code to count updates by user, date, and comment. First, select only verifications, and then use the {\tt merge} operation to associate them with their respective comments. After that, do the counting as usual. Here, the 6 records with higher counts are shown.
+  \emph{Solution 2}. Here is a sample R code to count updates by user, date, and comment. First, select only verifications, and then use the {\tt merge} operation to associate them with their respective comments. After that, group and count them as usual. Here, the 6 records with the highest counts are shown.
 
 <<echo=FALSE, results=hide>>=
 comments <- readRDS("../data/netbeans-platform-comments.rds")
