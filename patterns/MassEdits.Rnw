@@ -4,10 +4,7 @@
 
 \Problem
 
-Intent is "Discover changes to bug reports that were the result of a mass update."
-
-The problem is:
-  "How can we discover changes to bug reports that were the result of a mass update."
+  Discover changes to bug reports that were the result of a mass update.
 
 \Context
 

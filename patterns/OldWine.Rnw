@@ -6,9 +6,7 @@
 
 \Problem
   
-  Intent: Discard bug reports that are too recent to be classified.
-  
-  How can we deal with recent, incomplete information in bug reports?
+  Discard bug reports that are too recent to be classified.
 
   %Find bugs whose outcome is not yet known.
   %Discard bug reports that may have a long future ahead.

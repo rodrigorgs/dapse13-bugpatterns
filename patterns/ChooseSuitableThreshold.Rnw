@@ -2,9 +2,7 @@
 
 \Problem
 
-  Intent: Find a threshold for a metric so that data is separated into two distinct groups.
-  
-  Problem is: How can we ... ?
+  Find a threshold for a metric so that data is separated into two distinct groups.
 
 \Context
 

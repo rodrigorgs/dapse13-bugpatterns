@@ -5,10 +5,9 @@ Bug tracking systems store bug reports for a software project and keep record of
 However, bug tracking systems often contain data that is inaccurate~\cite{Antoniol2008}, biased~\cite{Bird2009}, or incomplete~\cite{Aranda2009}. For example, changing the status of a bug report to {\tt VERIFIED} usually means that, after a resolution was found to the bug, some kind of software verification (source code inspection, testing etc.) was performed and the resolution was considered appropriate. Sometimes, however, old bug reports are marked as verified just to help users and developers keep track of current bug reports~\cite{Souza2012}.
 
 %\todo[inline]{fall into common mistakes}
-Without proper guidance, it is easy to overlook pitfalls in the data and draw wrong conclusions. In this paper, we provide best practices and step-by-step solutions to recurring problems related to cleaning bug data %from cleaning up bug data up to deriving meaningful conclusions from bug reports.
-presented as \textit{patterns}.
-%Each solution is presented in a structured form called pattern. 
-For each pattern, the following fields for pattern documentation are presented: (1) a short \emph{name}; (2) the \emph{problem} being solved; (3) a \emph{context} in which the pattern can be applied; (4) one or more \emph{solutions} to the problem; (5) a \emph{discussion} of trade-offs and common mistakes to consider when using the pattern; and (6) \emph{examples} of the pattern in use. %; (7) \emph{related patterns}. 
+Without proper guidance, it is easy to overlook pitfalls in the data and draw wrong conclusions. In this paper, we provide best practices and step-by-step solutions to recurring problems related to cleaning bug data. %from cleaning up bug data up to deriving meaningful conclusions from bug reports.
+
+Each solution is presented in a structured form called pattern. A pattern consists of 6 sections: (1) a short \emph{name}; (2) the \emph{problem} being solved; (3) a \emph{context} in which the pattern can be applied; (4) one or more \emph{solutions} to the problem; (5) a \emph{discussion} of trade-offs and common mistakes to consider when using the pattern; and (6) \emph{examples} of the pattern in use. %; (7) \emph{related patterns}. 
 
 \section{Data Set}
 
