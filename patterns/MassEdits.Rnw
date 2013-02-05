@@ -49,7 +49,7 @@ with(ver, plot(n.changes ~ time, type="l"))
 
   In this chart, some line segments are almost vertical (e.g., the line between 2002 and 2004). Such segments mark dates with mass updates.
 
-  \emph{Solution 2}. Here is a sample R code to count updates by user, date, and comment. First, select only verifications, and then use the {\tt merge} operation to associate them with their respective comments. After that, group and count them as usual. Here, the 6 records with the highest counts are shown.
+  \emph{Solution 2}. Here is a sample R code to count updates by user, date, and comment. First, select only verifications, and then use the {\tt merge} operation to associate them with their respective comments. After that, group and count them as usual. The 6 records with the highest counts are shown in Table~\ref{tab:mass}.
 
 <<echo=FALSE, results=hide>>=
 comments <- readRDS("../data/netbeans-platform-comments.rds")
@@ -67,9 +67,12 @@ head(cnt[, c("date", "user", "freq")])
 @
 <<echo=FALSE, results=tex>>=
 library(xtable)
-x <- head(cnt[, c("date", "user", "freq")])
-x$date <- as.character(x$date)
-print(xtable(x), include.rownames=FALSE, caption.placement="top")
+data <- head(cnt[, c("date", "user", "freq")])
+data$date <- as.character(data$date)
+x <- xtable(data,
+  caption="Sample of mass updates, comments ommitted.",
+  label="tab:mass")
+print(x, include.rownames=FALSE, caption.placement="top")
 @
 
 
