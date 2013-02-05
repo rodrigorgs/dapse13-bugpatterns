@@ -10,7 +10,7 @@
 
   Changes to a bug report are often the result of an effort made by developers to triage, fix or verify a bug. Sometimes, however, hundreds or thousands of bug reports are changed almost simultaneously. Such changes are not caused by a burst of productivity; instead, they are the result of a mass update, often performed with the purpose of cleaning up the bug tracking system.
 
-  Mass updates can also be motivated by a policy change. In Eclipse Modeling Framework, for instance, developers decided that bug reports containing fixes that were already published on their website should have the status {\tt VERIFIED}\footnote{Source: \url{http://wiki.eclipse.org/Modeling_PMC_Meeting,_2007-10-16}}. A mass status update was needed to make previous bug reports conform to the new policy.
+  Mass updates can also be motivated by a policy change. In Eclipse Modeling Framework, for instance, developers decided that bug reports containing fixes that were already published on their website should have the status {\tt VERIFIED}\footnote{See \url{http://wiki.eclipse.org/Modeling_PMC_Meeting,_2007-10-16}}. A mass status update was needed to make previous bug reports conform to the new policy.
 
   Mass updates are characterized by a large number of changes of the \emph{same type} (e.g., marking a bug report as {\tt VERIFIED} or changing a target milestone) made by a single developer in a short period of time. Often such changes are accompanied by a comment that is the same for all changes in the mass update.
 
@@ -33,19 +33,36 @@
 
   For example, Souza and Chavez~\cite{Souza2012} used the first solution (see Figure 2 in their paper) and a variation of the second without taking comments into account to detect mass verifications (i.e., changes whose status is set to {\tt VERIFIED}). They discarded all changes that were part of a mass update which updated at least 50 bug reports.
 
-  \emph{Solution 1}. Here is a sample R code to plot the accumulated number of verifications over time.
+  \emph{Solution 1}. Here is a sample R code to plot the accumulated number of verifications over time, which produces Figure~\ref{fig:mass}.
 
 <<echo=FALSE, results=hide>>=
 changes <- readRDS("../data/netbeans-platform-changes.rds")
 @
 
-<<fig=TRUE,width=6,height=4>>=
+<<results=hide>>=
 ver <- subset(changes, field == "bug_status" 
   & new.value == "VERIFIED")
 ver <- ver[order(ver$time), ]
 ver$n.changes <- 1:nrow(ver)
 with(ver, plot(n.changes ~ time, type="l"))
 @
+
+<<figmass,include=FALSE>>=
+#op <- par(mar = par("mar")/2)
+#plot.new()  ## this is optional for this example
+#par(xpd=NA)
+with(ver, plot(n.changes ~ time, type="l"))
+#par(op)
+@
+
+\begin{figure}[!t]
+\centering
+<<fig=TRUE,echo=FALSE,width=6,height=4>>=
+<<figmass>>
+@
+  \caption{Accumulated number of changes over time.}
+  \label{fig:mass}
+\end{figure}
 
   In this chart, some line segments are almost vertical (e.g., the line between 2002 and 2004). Such segments mark dates with mass updates.
 
@@ -72,7 +89,10 @@ data$date <- as.character(data$date)
 x <- xtable(data,
   caption="Sample of mass updates, comments ommitted.",
   label="tab:mass")
-print(x, include.rownames=FALSE, caption.placement="top")
+print(x, 
+  include.rownames=FALSE, 
+  caption.placement="top",
+  table.placement="!t")
 @
 
 

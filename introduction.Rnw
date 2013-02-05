@@ -29,7 +29,10 @@ bugs$reporter <- NULL
 x <- xtable(bugs,
   caption="Sample of {\\tt bugs} table, hour info omitted.",
   label="tab:bugs")
-print(x, include.rownames=FALSE, caption.placement="top")
+print(x, 
+  include.rownames=FALSE, 
+  caption.placement="top",
+  table.placement="!t")
 @
 
 The {\tt comments} table contains comments that each {\tt user} added to a {\tt bug} report at some point in {\tt time}. To reduce the file size, the text for the comment was replaced by its MD5 hash (column {\tt comment.md5}). With high probability, two comments are represented by the same hash number if and only if they contain the same text. Table~\ref{tab:comments} shows a sample of the {\tt comments} table.
@@ -43,7 +46,10 @@ comments$comment.id <- NULL
 x <- xtable(comments,
   caption="Sample of {\\tt comments} table, hour info omitted.",
   label="tab:comments")
-print(x, include.rownames=FALSE, caption.placement="top")
+print(x, 
+  include.rownames=FALSE, 
+  caption.placement="top",
+  table.placement="!t")
 @
 
 The {\tt changes} table contains all modifications users made on bug reports over time. This includes changes in priority, status, resolution, or other field in a bug report. Each row contains the {\tt new value} of a {\tt field} that was modified by a {\tt user}\footnote{In this context, user denotes a user of the bug tracking system, which can be either a developer or a final user.} at some point in {\tt time}. Table~\ref{tab:changes} shows a sample of the {\tt bugs} table.
@@ -56,11 +62,14 @@ changes$time <- as.character(as.Date(changes$time))
 x <- xtable(changes,
   caption="Sample of {\\tt changes} table, hour info omitted.",
   label="tab:changes")
-print(x, include.rownames=FALSE, caption.placement="top")
+print(x, 
+  include.rownames=FALSE, 
+  caption.placement="top",
+  table.placement="!t")
 @
 
 The \emph{status} field is used to keep track of the progress of the bug fixing activity. A bug report is created with status {\tt NEW} or {\tt UNCONFIRMED}. Then, its status may be changed to {\tt ASSIGNED}, to denote that a user has taken responsibility on the bug. After that, the bug is {\tt RESOLVED}, then optionally {\tt VERIFIED} by the quality assurance team, and finally {\tt CLOSED} when the next software release comes out. If, after resolving the bug, someone finds that the resolution was not appropriate, the status is changed to {\tt REOPENED}.
 
-There are many wyas to resolve a bug. To reflect that, when a bug status is changed to {\tt RESOLVED}, the \emph{resolution} field is changed either to {\tt FIXED}---if the software was changed to solve the issue---, {\tt WORKSFORME}---if developers were not able to reproduce the problem---, {\tt DUPLICATE}---if a previous bug report describes the same problem---, among other resolutions.
+%There are many ways to resolve a bug. To reflect that, when a bug status is changed to {\tt RESOLVED}, the \emph{resolution} field is changed either to {\tt FIXED}---if the software was changed to solve the issue---, {\tt WORKSFORME}---if developers were not able to reproduce the problem---, {\tt DUPLICATE}---if a previous bug report describes the same problem---, among other resolutions.
 
 All the data and code used in this paper is available online\footnote{\url{https://github.com/rodrigorgs/dapse13-bugpatterns}}. 
