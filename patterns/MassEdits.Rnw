@@ -4,7 +4,7 @@
 
 \Problem
 
-  Discover changes to bug reports that were the result of a mass update.
+  Determine which changes to bug reports were the result of a mass update.
 
 \Context
 

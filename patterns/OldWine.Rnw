@@ -6,7 +6,7 @@
 
 \Problem
   
-  Discard bug reports that are too recent to be classified.
+  Determine bug reports that are too recent to be classified.
 
   %Find bugs whose outcome is not yet known.
   %Discard bug reports that may have a long future ahead.
@@ -16,9 +16,11 @@
 
 \Context
 
-  Bug reports change over time. Sometimes, one needs to classify a bug report according to the eventual occurence of some change. For example, has a bug been fixed (or will it, eventually)? Is this a bug that was or will be reopened, or it will never be reopened? 
-
-  While for older bugs such questions can be answered with high confidence, for bugs that are too recent, the change we are interested may not have happened---\emph{yet}. The question is how long to wait for the change to happen before assuming that it will never happen for a particular bug report.
+  Bug reports change over time. Sometimes, one needs to classify a bug report according to the eventual occurence of some change. 
+  %
+  For example, suppose that one wants to predict whether a bug report will be reopened. To train a prediction model, each existing bug report has to be classified as reopening (if it was or will be reopened) or non-reopening (if it will never be reopened). However, for recent bug reports, it is likely that they were not reopened yet---even if they will be, eventually. Therefore, recent reports cannot be classified accurately with available data, and should not be used for training.
+  %
+  The question is how long one should wait for a change to happen (e.g., bug reopening) before assuming it will never happen.
 
 \Solution
 
