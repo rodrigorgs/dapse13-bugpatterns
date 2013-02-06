@@ -31,7 +31,7 @@
 
 \Example
 
-  For example, Souza and Chavez~\cite{Souza2012} used the first solution (see Figure 2 in their paper) and a variation of the second without taking comments into account to detect mass verifications (i.e., changes whose status is set to {\tt VERIFIED}). They discarded all changes that were part of a mass update which updated at least 50 bug reports.
+  For example, Souza and Chavez~\cite{Souza2012} used the first solution (see Figure 2 in their paper) and a variation of the second without taking comments into account to detect mass verifications (i.e., changes which set the status to {\tt VERIFIED}). They discarded all changes that were part of a mass update which updated at least 50 bug reports.
 
   \emph{Solution 1}. Here is a sample R code to plot the accumulated number of verifications over time, which produces Figure~\ref{fig:mass}.
 
@@ -47,12 +47,8 @@ ver$n.changes <- 1:nrow(ver)
 with(ver, plot(n.changes ~ time, type="l"))
 @
 
-<<figmass,include=FALSE>>=
-#op <- par(mar = par("mar")/2)
-#plot.new()  ## this is optional for this example
-#par(xpd=NA)
+<<figmass,echo=FALSE,include=FALSE>>=
 with(ver, plot(n.changes ~ time, type="l"))
-#par(op)
 @
 
 \begin{figure}[!t]
@@ -66,7 +62,11 @@ with(ver, plot(n.changes ~ time, type="l"))
 
   In this chart, some line segments are almost vertical (e.g., the line between 2002 and 2004). Such segments mark dates with mass updates.
 
-  \emph{Solution 2}. Here is a sample R code to count updates by user, date, and comment. First, select only verifications, and then use the {\tt merge} operation to associate them with their respective comments. After that, group and count them as usual. The 6 records with the highest counts are shown in Table~\ref{tab:mass}.
+<<echo=FALSE,results=hide>>=
+records.shown <- 4
+@
+
+  \emph{Solution 2}. Here is a sample R code to count updates by user, date, and comment. First, select only verifications, and then use the {\tt merge} operation to associate them with their respective comments. After that, group and count them as usual. The \Sexpr{records.shown} records with the highest counts are shown in Table~\ref{tab:mass}.
 
 <<echo=FALSE, results=hide>>=
 comments <- readRDS("../data/netbeans-platform-comments.rds")
@@ -80,11 +80,10 @@ full <- merge(ver, comments)
 cnt <- count(full, c("date", "user", 
                      "comment.md5"))
 cnt <- cnt[order(cnt$freq, decreasing=T), ]
-head(cnt[, c("date", "user", "freq")])
 @
 <<echo=FALSE, results=tex>>=
 library(xtable)
-data <- head(cnt[, c("date", "user", "freq")])
+data <- head(cnt[, c("date", "user", "freq")], records.shown)
 data$date <- as.character(data$date)
 x <- xtable(data,
   caption="Sample of mass updates, comments ommitted.",
