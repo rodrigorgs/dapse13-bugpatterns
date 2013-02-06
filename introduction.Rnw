@@ -68,8 +68,8 @@ print(x,
   table.placement="!t")
 @
 
-The \emph{status} field is used to keep track of the progress of the bug fixing activity. A bug report is created with status {\tt NEW} or {\tt UNCONFIRMED}. Then, its status may be changed to {\tt ASSIGNED}, to denote that a user has taken responsibility on the bug. After that, the bug is {\tt RESOLVED}, then optionally {\tt VERIFIED} by the quality assurance team, and finally {\tt CLOSED} when the next software release comes out. If, after resolving the bug, someone finds that the resolution was not appropriate, the status is changed to {\tt REOPENED}.
+The \emph{status} field is used to track the progress of the bug fixing activity. A bug report is created with status {\tt NEW} or {\tt UNCONFIRMED}. Then, its status may be changed to {\tt ASSIGNED}, to denote that a user has taken responsibility on the bug. After that, the bug is {\tt RESOLVED}, then optionally {\tt VERIFIED} by the quality assurance team, and finally {\tt CLOSED} when the next software release comes out. If, after resolving the bug, someone finds that the resolution was not appropriate, the status is changed to {\tt REOPENED}.
 
 %There are many ways to resolve a bug. To reflect that, when a bug status is changed to {\tt RESOLVED}, the \emph{resolution} field is changed either to {\tt FIXED}---if the software was changed to solve the issue---, {\tt WORKSFORME}---if developers were not able to reproduce the problem---, {\tt DUPLICATE}---if a previous bug report describes the same problem---, among other resolutions.
 
-All the data and code used in this paper is available online\footnote{\url{https://github.com/rodrigorgs/dapse13-bugpatterns}}. 
+All the data and code used in this paper is online\footnote{\url{https://github.com/rodrigorgs/dapse13-bugpatterns}}. 
