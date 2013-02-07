@@ -52,7 +52,7 @@ print(x,
   table.placement="!t")
 @
 
-The {\tt changes} table contains all modifications users made on bug reports over time. This includes changes in priority, status, resolution, or any other field in a bug report. Each row contains the {\tt new value} of a {\tt field} that was modified by a {\tt user}\footnote{In this context, user denotes a user of the bug tracking system, which can be either a developer or a final user.} at some point in {\tt time}. Table~\ref{tab:changes} shows a sample of the {\tt bugs} table.
+The {\tt changes} table contains all modifications users made on bug reports over time. This includes changes in priority, status, resolution, or any other field in a bug report. Each row contains the {\tt new value} of a {\tt field} that was modified by a {\tt user}\footnote{In this context, user denotes a user of the bug tracking system, which can be either a developer or a final user.} at some point in {\tt time}. Table~\ref{tab:changes} shows a sample of the {\tt changes} table.
 
 <<echo=FALSE, results=tex>>=
 library(xtable)
