@@ -31,7 +31,7 @@
 
 \Example
 
-  For example, Souza and Chavez~\cite{Souza2012} used the first solution (see Figure 2 in their paper) and a variation of the second without taking comments into account to detect mass verifications (i.e., changes which set the status to {\tt VERIFIED}). They discarded all changes that were part of a mass update which updated at least 50 bug reports.
+  For example, Souza and Chavez~\cite{Souza2012} used the first solution (see Figure 2 in their paper) and a variation of the second without taking comments into account to detect mass verifications (i.e., changes which set the status to {\tt VERIFIED}). They discarded all changes that were part of mass updates which changed at least 50 bug reports.
 
   \emph{Solution 1}. Here is a sample R code to plot the accumulated number of verifications over time, which produces Figure~\ref{fig:mass}.
 

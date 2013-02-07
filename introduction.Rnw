@@ -11,9 +11,9 @@ Without proper guidance, it is easy to overlook pitfalls in the data and draw wr
 
 \section{Data Set}
 
-Each pattern contains an \emph{Example} section with code snippets showing how to apply the pattern on real data. The snippets are written in R, a programming language for data analysis\footnote{\url{http://www.r-project.org/}}. The data used are bug reports from the project NetBeans/Platform, made available for the 2011 edition of the Mining Challenge\footnote{http://2011.msrconf.org/msr-challenge.html}.
+Each pattern contains an \emph{Examples} section with code snippets showing how to apply the pattern on real data. The snippets are written in R, a programming language for data analysis\footnote{\url{http://www.r-project.org/}}. The data used are bug reports from the project NetBeans/Platform, made available for the 2011 edition of the MSR Mining Challenge\footnote{http://2011.msrconf.org/msr-challenge.html}.
 
-The NetBeans project uses Bugzilla\footnote{\url{http://www.bugzilla.org/}} as its bug tracking system, which stores all data in a MySQL database. Although the source code presented here refers to database tables and columns used by Bugzilla, it should work with any bug tracking system with minor changes.
+The NetBeans project uses Bugzilla\footnote{\url{http://www.bugzilla.org/}} as its bug tracking system, which stores all data in a MySQL database. The source code presented here refers to database tables and columns used by Bugzilla, but it should work with any bug tracking system with minor changes.
 
 Although the full NetBeans data set contains 57 database tables, in this paper only three are used: {\tt bugs}, {\tt changes} (originally, {\tt bugs\_activity}), and {\tt comments} (originally, {\tt longdescs}). Notice that some tables and columns were renamed for clarity purposes.
 
@@ -35,7 +35,7 @@ print(x,
   table.placement="!t")
 @
 
-The {\tt comments} table contains comments that each {\tt user} added to a {\tt bug} report at some point in {\tt time}. To reduce the file size, the text for the comment was replaced by its MD5 hash (column {\tt comment.md5}). With high probability, two comments are represented by the same hash number if and only if they contain the same text. Table~\ref{tab:comments} shows a sample of the {\tt comments} table.
+The {\tt comments} table contains comments that each {\tt user} added to a {\tt bug} report at some point in {\tt time}. To reduce the file size, the comment text was replaced by its MD5 hash (column {\tt comment.md5}). With high probability, two comments are represented by the same hash number if and only if they contain the same text. Table~\ref{tab:comments} shows a sample of the {\tt comments} table.
 
 <<echo=FALSE, results=tex>>=
 library(xtable)
@@ -52,7 +52,7 @@ print(x,
   table.placement="!t")
 @
 
-The {\tt changes} table contains all modifications users made on bug reports over time. This includes changes in priority, status, resolution, or other field in a bug report. Each row contains the {\tt new value} of a {\tt field} that was modified by a {\tt user}\footnote{In this context, user denotes a user of the bug tracking system, which can be either a developer or a final user.} at some point in {\tt time}. Table~\ref{tab:changes} shows a sample of the {\tt bugs} table.
+The {\tt changes} table contains all modifications users made on bug reports over time. This includes changes in priority, status, resolution, or any other field in a bug report. Each row contains the {\tt new value} of a {\tt field} that was modified by a {\tt user}\footnote{In this context, user denotes a user of the bug tracking system, which can be either a developer or a final user.} at some point in {\tt time}. Table~\ref{tab:changes} shows a sample of the {\tt bugs} table.
 
 <<echo=FALSE, results=tex>>=
 library(xtable)

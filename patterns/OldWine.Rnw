@@ -18,7 +18,7 @@
 
   Bug reports change over time. Sometimes, one needs to classify a bug report according to the eventual occurrence of some change. 
   %
-  For example, suppose that one wants to predict whether future bug reports will be reopened. To train a prediction model, each existing bug report has to be classified as reopening (if it was or will be reopened) or non-reopening (if it will likely never be reopened). However, for recent bug reports, it is likely that they were not reopened yet---even if they will be, eventually. Therefore, recent reports cannot be classified accurately with available data, and should not be used for training.
+  For example, suppose that one wants to predict whether future bug reports will be reopened. To train a prediction model, each existing bug report has to be classified as reopening (if it was or will be reopened) or non-reopening (if it will likely never be reopened). However, for recent bug reports, it is likely that they were not reopened yet---even if they will be, eventually. Therefore, recent reports cannot be accurately classified with available data, and should be discarded from the training set.
   %
   The question is how long one should wait for a change to happen before assuming it will never happen.
 
@@ -35,13 +35,13 @@ bugs <- readRDS("../data/netbeans-platform-bugs.rds")
   %
   If the lifetime is short, however, one cannot be confident that the change will never happen, hence discard it from the analysis.
 
-  The key is to choose an appropriate threshold for the lifetime of bug reports. At first, just choose any value (e.g., 30 days). Then, compute the confidence, $\alpha$, that bugs older than the threshold will never undergo the change. To do that, first compute the proportion, $c$ of bug reports that have undergone the change. Then, compute the proportion of older bug reports (i.e., which have a lifetime greater than the threshold), $t$, that did not undergo the change within the threshold. The confidence, $\alpha$, can be approximated by the quotient $\frac{r}{t}$.
+  The key is to choose an appropriate threshold for the lifetime of bug reports. At first, just choose any value (e.g., 30 days). Then, compute the confidence, $\alpha$, that bugs older than the threshold will never undergo the change. To do that, first compute the proportion, $c$ of bug reports that have undergone the change. Then, compute the proportion of older bug reports (i.e., which have a lifetime greater than the threshold), $t$, that did not undergo the change within the threshold. The confidence, $\alpha$, can be approximated by the quotient $c / t$.
 
-  Assess whether the probability $\alpha$ is high enough (most data scientists find $0.95$ to be an acceptable value). If it is not, choose another threshold and recompute $\alpha$ until you are satisfied. After finding an appropriate threshold, discard bugs with lifetime shorter than the threshold, because it is not possible to say, with confidence $\alpha$, that they will never undergo the change.
+  Assess whether $\alpha$ is high enough (most data scientists find $0.95$ to be an acceptable value). If it is not, choose another threshold and recompute $\alpha$ until you are satisfied. After finding an appropriate threshold, discard bugs with lifetime shorter than the threshold, because it is not possible to determine, with confidence $\alpha$, that they will never undergo the change.
 
 \Discussion
 
-  It is a common mistake to keep recent bug reports. This is equivalent to choosing a threshold of 0, a value that is too optimistic. There is a trade-off between the confidence, $\alpha$, and the size of the final data set: higher confidence means more bugs are discarded.
+  It is a common mistake to keep recent bug reports. This is equivalent to choosing a threshold of 0, a value that is too optimistic. There is a trade-off between the confidence, $\alpha$, and the size of the final data set: the higher the confidence, the higher the number of discarded bugs.%higher confidence means more bugs are discarded.
 
 \Example
 
@@ -81,7 +81,7 @@ percent.discarded <- format(round(percent.discarded, 1), nsmall = 1)
 percent.discarded
 @
 
-  In this case, we find $\alpha = \Sexpr{alpha.2d}$, which is acceptable. Therefore, you should analyze only bug reports older than 42 days---which are already stored in the variable {\tt older}---and discard the rest. In this case, only $\Sexpr{percent.discarded}\%$ of the bugs needed to be discarded.
+  In this case, we find $\alpha = \Sexpr{alpha.2d}$, an acceptable value. Therefore, you should only analyze bug reports older than 42 days---which are already stored in the variable {\tt older}---and discard the rest. In this case, only $\Sexpr{percent.discarded}\%$ of the bugs needed to be discarded.
 
 % \RelatedPatterns
 
