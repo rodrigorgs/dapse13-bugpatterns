@@ -86,7 +86,7 @@ library(xtable)
 data <- head(cnt[, c("date", "user", "freq")], records.shown)
 data$date <- as.character(data$date)
 x <- xtable(data,
-  caption="Sample of mass updates, comments ommitted.",
+  caption="Sample of mass updates, comments omitted.",
   label="tab:mass")
 print(x, 
   include.rownames=FALSE, 
