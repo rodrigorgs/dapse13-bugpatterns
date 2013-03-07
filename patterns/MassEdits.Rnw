@@ -26,12 +26,13 @@
 
 \Discussion
 
-  The first solution to find mass updates is more visual, but less accurate, as it does not take into account the user who made the changes. It is useful for a quick exploratory assessment of mass updates.
-  The second solution is numeric and takes into account the users and their comments, but is more computationally intensive.
+  The first solution is useful for a quick and exploratory assessment of mass updates, but it is subjective and may be inaccurate. For example, some projects have testing phases, in which the verification activity is higher than usual. Such phases can be identified by applying the \emph{Testing Phase} pattern~\cite{Souza2013b}. In this case, the bug status is not mass updated to {\tt VERIFIED}; instead, each change reflects an actual verification effort.
+
+  In the second solution, users and their comments are considered, which helps improve its accuracy. It is a numeric, objective solution, but it is also more computationally intensive.
 
 \Example
 
-  For example, Souza and Chavez~\cite{Souza2012} used the first solution (see Figure 2 in their paper) and a variation of the second without taking comments into account to detect mass verifications (i.e., changes which set the status to {\tt VERIFIED}). They discarded all changes that were part of mass updates which changed at least 50 bug reports.
+  Souza and Chavez~\cite{Souza2012} used the first solution (see Figure 2 in their paper) and a variation of the second without taking comments into account to detect mass verifications (i.e., changes which set the status to {\tt VERIFIED}). They discarded all changes that were part of mass updates which changed at least 50 bug reports.
 
   \emph{Solution 1}. Here is a sample R code to plot the accumulated number of verifications over time, which produces Figure~\ref{fig:mass}.
 
