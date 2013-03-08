@@ -49,12 +49,13 @@ with(ver, plot(n.changes ~ time, type="l"))
 @
 
 <<figmass,echo=FALSE,include=FALSE>>=
+par(mar=c(4,4,2,2) + 0.1)
 with(ver, plot(n.changes ~ time, type="l"))
 @
 
 \begin{figure}[!t]
 \centering
-<<fig=TRUE,echo=FALSE,width=6,height=4>>=
+<<fig=TRUE,echo=FALSE,width=6,height=5>>=
 <<figmass>>
 @
   \caption{Accumulated number of changes over time.}
@@ -64,7 +65,7 @@ with(ver, plot(n.changes ~ time, type="l"))
   In this chart, some line segments are almost vertical (e.g., the line between 2002 and 2004). Such segments mark dates with mass updates.
 
 <<echo=FALSE,results=hide>>=
-records.shown <- 4
+records.shown <- 6
 @
 
   \emph{Solution 2}. Here is a sample R code to count updates by user, date, and comment. First, select only verifications, and then use the {\tt merge} operation to associate them with their respective comments. After that, group and count them as usual. The \Sexpr{records.shown} records with the highest counts are shown in Table~\ref{tab:mass}.
